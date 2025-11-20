@@ -23,7 +23,7 @@ async function seedDatabase() {
       VALUES (
         'Your Name',
         'Welcome to my portfolio. I''m a project manager who brings ideas to life.',
-        'https://via.placeholder.com/300'
+        'https://www.figma.com/api/mcp/asset/f00bc549-ad68-4d9a-bb3f-062bd584f6cb'
       )
       ON CONFLICT DO NOTHING
     `;
@@ -57,7 +57,7 @@ async function seedDatabase() {
     console.log('\nAdding sample company...');
     await sql`
       INSERT INTO companies (name, logo_url, display_order)
-      VALUES ('Company Name', 'https://via.placeholder.com/120x40', 1)
+      VALUES ('Company Name', 'https://picsum.photos/120/40?random=company1', 1)
       ON CONFLICT DO NOTHING
     `;
     console.log('✅ Sample company added');
@@ -71,7 +71,7 @@ async function seedDatabase() {
       VALUES (
         'Sample Project',
         'This is a sample case study. Edit this through the admin panel.',
-        'https://via.placeholder.com/600x400',
+        'https://www.figma.com/api/mcp/asset/a0dcd056-c0ea-4259-af5e-b9c18527c4f5',
         'Strategy',
         '#3f8e00',
         'View Project',
@@ -91,7 +91,7 @@ async function seedDatabase() {
       VALUES (
         'John Doe',
         'Working with this project manager was an absolute pleasure. Highly recommended!',
-        'https://via.placeholder.com/100',
+        'https://www.figma.com/api/mcp/asset/924177db-2185-4aae-985b-990be63a1a21',
         1
       )
       ON CONFLICT DO NOTHING
@@ -107,7 +107,7 @@ async function seedDatabase() {
       VALUES (
         'Recent Project',
         'A brief description of this recent project.',
-        'https://via.placeholder.com/500x350',
+        'https://www.figma.com/api/mcp/asset/bbadab58-b572-4f2e-b94e-aaecd86f17df',
         'Know more',
         1
       )
