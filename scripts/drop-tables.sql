@@ -1,0 +1,13 @@
+-- Drop all tables (in reverse order due to potential foreign keys)
+DROP TABLE IF EXISTS contact_submissions CASCADE;
+DROP TABLE IF EXISTS resume CASCADE;
+DROP TABLE IF EXISTS seo_settings CASCADE;
+DROP TABLE IF EXISTS company_logos CASCADE;
+DROP TABLE IF EXISTS social_links CASCADE;
+DROP TABLE IF EXISTS contact_info CASCADE;
+DROP TABLE IF EXISTS recent_work CASCADE;
+DROP TABLE IF EXISTS testimonials CASCADE;
+DROP TABLE IF EXISTS projects CASCADE;
+DROP TABLE IF EXISTS about CASCADE;
+DROP TABLE IF EXISTS portfolio_config CASCADE;
+DROP TABLE IF EXISTS admin_user CASCADE;

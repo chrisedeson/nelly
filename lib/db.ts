@@ -1,0 +1,417 @@
+import { sql } from '@vercel/postgres';
+
+// Portfolio Config
+export async function getPortfolioConfig() {
+  const { rows } = await sql`SELECT * FROM portfolio_config LIMIT 1`;
+  return rows[0] || null;
+}
+
+export async function updatePortfolioConfig(data: {
+  name: string;
+  intro_text: string;
+  profile_image_url?: string;
+  cta_text: string;
+}) {
+  const { rows } = await sql`
+    UPDATE portfolio_config
+    SET name = ${data.name},
+        intro_text = ${data.intro_text},
+        profile_image_url = ${data.profile_image_url || null},
+        cta_text = ${data.cta_text},
+        updated_at = CURRENT_TIMESTAMP
+    WHERE id = 1
+    RETURNING *
+  `;
+  return rows[0];
+}
+
+// About Section
+export async function getAbout() {
+  const { rows } = await sql`SELECT * FROM about LIMIT 1`;
+  return rows[0] || null;
+}
+
+export async function updateAbout(data: { content: string; skills: string[] }) {
+  const { rows } = await sql`
+    UPDATE about
+    SET content = ${data.content},
+        skills = ${JSON.stringify(data.skills)}::jsonb,
+        updated_at = CURRENT_TIMESTAMP
+    WHERE id = 1
+    RETURNING *
+  `;
+  return rows[0];
+}
+
+// Projects
+export async function getProjects() {
+  const { rows } = await sql`
+    SELECT * FROM projects
+    ORDER BY order_index ASC
+  `;
+  return rows;
+}
+
+export async function getProject(id: number) {
+  const { rows } = await sql`SELECT * FROM projects WHERE id = ${id}`;
+  return rows[0] || null;
+}
+
+export async function createProject(data: {
+  title: string;
+  description: string;
+  tags: string;
+  image_url?: string;
+  project_link?: string;
+  order_index: number;
+}) {
+  const { rows } = await sql`
+    INSERT INTO projects (title, description, tags, image_url, project_link, order_index)
+    VALUES (${data.title}, ${data.description}, ${data.tags}, ${data.image_url || null}, ${data.project_link || null}, ${data.order_index})
+    RETURNING *
+  `;
+  return rows[0];
+}
+
+export async function updateProject(id: number, data: {
+  title: string;
+  description: string;
+  tags: string;
+  image_url?: string;
+  project_link?: string;
+  order_index: number;
+}) {
+  const { rows } = await sql`
+    UPDATE projects
+    SET title = ${data.title},
+        description = ${data.description},
+        tags = ${data.tags},
+        image_url = ${data.image_url || null},
+        project_link = ${data.project_link || null},
+        order_index = ${data.order_index},
+        updated_at = CURRENT_TIMESTAMP
+    WHERE id = ${id}
+    RETURNING *
+  `;
+  return rows[0];
+}
+
+export async function deleteProject(id: number) {
+  await sql`DELETE FROM projects WHERE id = ${id}`;
+}
+
+// Testimonials
+export async function getTestimonials() {
+  const { rows } = await sql`
+    SELECT * FROM testimonials
+    ORDER BY order_index ASC
+  `;
+  return rows;
+}
+
+export async function getTestimonial(id: number) {
+  const { rows } = await sql`SELECT * FROM testimonials WHERE id = ${id}`;
+  return rows[0] || null;
+}
+
+export async function createTestimonial(data: {
+  quote: string;
+  client_name: string;
+  client_image_url?: string;
+  order_index: number;
+}) {
+  const { rows } = await sql`
+    INSERT INTO testimonials (quote, client_name, client_image_url, order_index)
+    VALUES (${data.quote}, ${data.client_name}, ${data.client_image_url || null}, ${data.order_index})
+    RETURNING *
+  `;
+  return rows[0];
+}
+
+export async function updateTestimonial(id: number, data: {
+  quote: string;
+  client_name: string;
+  client_image_url?: string;
+  order_index: number;
+}) {
+  const { rows } = await sql`
+    UPDATE testimonials
+    SET quote = ${data.quote},
+        client_name = ${data.client_name},
+        client_image_url = ${data.client_image_url || null},
+        order_index = ${data.order_index},
+        updated_at = CURRENT_TIMESTAMP
+    WHERE id = ${id}
+    RETURNING *
+  `;
+  return rows[0];
+}
+
+export async function deleteTestimonial(id: number) {
+  await sql`DELETE FROM testimonials WHERE id = ${id}`;
+}
+
+// Recent Work
+export async function getRecentWork() {
+  const { rows } = await sql`
+    SELECT * FROM recent_work
+    ORDER BY order_index ASC
+  `;
+  return rows;
+}
+
+export async function getRecentWorkItem(id: number) {
+  const { rows } = await sql`SELECT * FROM recent_work WHERE id = ${id}`;
+  return rows[0] || null;
+}
+
+export async function createRecentWork(data: {
+  title: string;
+  description: string;
+  image_url?: string;
+  order_index: number;
+}) {
+  const { rows } = await sql`
+    INSERT INTO recent_work (title, description, image_url, order_index)
+    VALUES (${data.title}, ${data.description}, ${data.image_url || null}, ${data.order_index})
+    RETURNING *
+  `;
+  return rows[0];
+}
+
+export async function updateRecentWork(id: number, data: {
+  title: string;
+  description: string;
+  image_url?: string;
+  order_index: number;
+}) {
+  const { rows } = await sql`
+    UPDATE recent_work
+    SET title = ${data.title},
+        description = ${data.description},
+        image_url = ${data.image_url || null},
+        order_index = ${data.order_index},
+        updated_at = CURRENT_TIMESTAMP
+    WHERE id = ${id}
+    RETURNING *
+  `;
+  return rows[0];
+}
+
+export async function deleteRecentWork(id: number) {
+  await sql`DELETE FROM recent_work WHERE id = ${id}`;
+}
+
+// Contact Info
+export async function getContactInfo() {
+  const { rows } = await sql`SELECT * FROM contact_info LIMIT 1`;
+  return rows[0] || null;
+}
+
+export async function updateContactInfo(data: {
+  email?: string;
+  phone?: string;
+  location?: string;
+  receiver_email: string;
+}) {
+  const { rows } = await sql`
+    UPDATE contact_info
+    SET email = ${data.email || null},
+        phone = ${data.phone || null},
+        location = ${data.location || null},
+        receiver_email = ${data.receiver_email},
+        updated_at = CURRENT_TIMESTAMP
+    WHERE id = 1
+    RETURNING *
+  `;
+  return rows[0];
+}
+
+// Social Links
+export async function getSocialLinks() {
+  const { rows } = await sql`
+    SELECT * FROM social_links
+    ORDER BY order_index ASC
+  `;
+  return rows;
+}
+
+export async function getSocialLink(id: number) {
+  const { rows } = await sql`SELECT * FROM social_links WHERE id = ${id}`;
+  return rows[0] || null;
+}
+
+export async function createSocialLink(data: {
+  platform: string;
+  url: string;
+  order_index: number;
+}) {
+  const { rows } = await sql`
+    INSERT INTO social_links (platform, url, order_index)
+    VALUES (${data.platform}, ${data.url}, ${data.order_index})
+    RETURNING *
+  `;
+  return rows[0];
+}
+
+export async function updateSocialLink(id: number, data: {
+  platform: string;
+  url: string;
+  order_index: number;
+}) {
+  const { rows } = await sql`
+    UPDATE social_links
+    SET platform = ${data.platform},
+        url = ${data.url},
+        order_index = ${data.order_index},
+        updated_at = CURRENT_TIMESTAMP
+    WHERE id = ${id}
+    RETURNING *
+  `;
+  return rows[0];
+}
+
+export async function deleteSocialLink(id: number) {
+  await sql`DELETE FROM social_links WHERE id = ${id}`;
+}
+
+// Company Logos
+export async function getCompanyLogos() {
+  const { rows } = await sql`
+    SELECT * FROM company_logos
+    ORDER BY order_index ASC
+  `;
+  return rows;
+}
+
+export async function getCompanyLogo(id: number) {
+  const { rows } = await sql`SELECT * FROM company_logos WHERE id = ${id}`;
+  return rows[0] || null;
+}
+
+export async function createCompanyLogo(data: {
+  company_name: string;
+  logo_url?: string;
+  order_index: number;
+}) {
+  const { rows } = await sql`
+    INSERT INTO company_logos (company_name, logo_url, order_index)
+    VALUES (${data.company_name}, ${data.logo_url || null}, ${data.order_index})
+    RETURNING *
+  `;
+  return rows[0];
+}
+
+export async function updateCompanyLogo(id: number, data: {
+  company_name: string;
+  logo_url?: string;
+  order_index: number;
+}) {
+  const { rows } = await sql`
+    UPDATE company_logos
+    SET company_name = ${data.company_name},
+        logo_url = ${data.logo_url || null},
+        order_index = ${data.order_index},
+        updated_at = CURRENT_TIMESTAMP
+    WHERE id = ${id}
+    RETURNING *
+  `;
+  return rows[0];
+}
+
+export async function deleteCompanyLogo(id: number) {
+  await sql`DELETE FROM company_logos WHERE id = ${id}`;
+}
+
+// SEO Settings
+export async function getSEOSettings() {
+  const { rows } = await sql`SELECT * FROM seo_settings LIMIT 1`;
+  return rows[0] || null;
+}
+
+export async function updateSEOSettings(data: {
+  page_title: string;
+  meta_description: string;
+  og_image_url?: string;
+}) {
+  const { rows } = await sql`
+    UPDATE seo_settings
+    SET page_title = ${data.page_title},
+        meta_description = ${data.meta_description},
+        og_image_url = ${data.og_image_url || null},
+        updated_at = CURRENT_TIMESTAMP
+    WHERE id = 1
+    RETURNING *
+  `;
+  return rows[0];
+}
+
+// Resume
+export async function getResume() {
+  const { rows } = await sql`SELECT * FROM resume LIMIT 1`;
+  return rows[0] || null;
+}
+
+export async function updateResume(file_url: string) {
+  const { rows } = await sql`
+    UPDATE resume
+    SET file_url = ${file_url},
+        updated_at = CURRENT_TIMESTAMP
+    WHERE id = 1
+    RETURNING *
+  `;
+  if (rows.length === 0) {
+    const { rows: newRows } = await sql`
+      INSERT INTO resume (file_url)
+      VALUES (${file_url})
+      RETURNING *
+    `;
+    return newRows[0];
+  }
+  return rows[0];
+}
+
+export async function deleteResume() {
+  await sql`DELETE FROM resume WHERE id = 1`;
+}
+
+// Admin User
+export async function getAdminUser() {
+  const { rows } = await sql`SELECT * FROM admin_user LIMIT 1`;
+  return rows[0] || null;
+}
+
+export async function updateAdminPassword(password_hash: string) {
+  const { rows } = await sql`
+    UPDATE admin_user
+    SET password_hash = ${password_hash},
+        updated_at = CURRENT_TIMESTAMP
+    WHERE id = 1
+    RETURNING *
+  `;
+  return rows[0];
+}
+
+// Contact Form Submissions
+export async function createContactSubmission(data: {
+  name?: string;
+  email: string;
+  phone?: string;
+  message: string;
+}) {
+  const { rows } = await sql`
+    INSERT INTO contact_submissions (name, email, phone, message)
+    VALUES (${data.name || null}, ${data.email}, ${data.phone || null}, ${data.message})
+    RETURNING *
+  `;
+  return rows[0];
+}
+
+export async function getContactSubmissions() {
+  const { rows } = await sql`
+    SELECT * FROM contact_submissions
+    ORDER BY created_at DESC
+    LIMIT 100
+  `;
+  return rows;
+}
