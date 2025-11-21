@@ -1,10 +1,9 @@
 "use client";
-import { toast } from "sonner";
 
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Button } from "@/components/ui/button";
-import { Bold, Italic, List, ListOrdered, Link as LinkIcon } from "lucide-react";
+import { Bold, Italic, List, ListOrdered } from "lucide-react";
 import { useEffect } from "react";
 
 interface RichTextEditorProps {
@@ -16,6 +15,7 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
   const editor = useEditor({
     extensions: [StarterKit],
     content,
+    immediatelyRender: false,
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML());
     },
