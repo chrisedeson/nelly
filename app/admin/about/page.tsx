@@ -133,7 +133,7 @@ export default function AboutPage() {
                 onChange={(e) =>
                   setData({
                     ...data,
-                    years_experience: parseInt(e.target.value),
+                    years_experience: parseInt(e.target.value) || 0,
                   })
                 }
                 required
@@ -152,7 +152,7 @@ export default function AboutPage() {
                 onChange={(e) =>
                   setData({
                     ...data,
-                    projects_completed: parseInt(e.target.value),
+                    projects_completed: parseInt(e.target.value) || 0,
                   })
                 }
                 required
