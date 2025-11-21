@@ -22,9 +22,10 @@ const sections = [
   },
   {
     title: "About",
-    description: "Update your bio, image, and skills",
+    description: "Update your bio, image, and skills (Coming soon - not rendered on site)",
     icon: User,
     href: "/admin/about",
+    disabled: true,
   },
   {
     title: "Projects",
@@ -91,13 +92,13 @@ export default function AdminDashboard() {
           const Icon = section.icon;
           return (
             <Link key={section.href} href={section.href}>
-              <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer">
+              <Card className={`p-6 hover:shadow-lg transition-shadow cursor-pointer ${(section as any).disabled ? 'opacity-50' : ''}`}>
                 <div className="flex items-start space-x-4">
                   <div className="p-2 bg-primary/10 rounded-lg">
                     <Icon className="h-6 w-6 text-primary" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-semibold mb-1">{section.title}</h3>
+                    <h3 className={`font-semibold mb-1 ${(section as any).disabled ? 'line-through' : ''}`}>{section.title}</h3>
                     <p className="text-sm text-muted-foreground">
                       {section.description}
                     </p>

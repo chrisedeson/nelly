@@ -3,6 +3,7 @@ import { auth, signOut } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import AdminNav from "@/components/admin/admin-nav";
 
 export const metadata: Metadata = {
   title: "Admin Panel | Portfolio",
@@ -32,68 +33,7 @@ export default async function AdminLayout({
               <Link href="/admin" className="text-xl font-bold" aria-label="Admin Panel Home">
                 Admin Panel
               </Link>
-              <div className="hidden md:flex space-x-4" role="menubar" aria-label="Main menu">
-                <Link
-                  href="/admin/hero"
-                  className="text-sm hover:text-primary transition-colors"
-                >
-                  Hero
-                </Link>
-                <Link
-                  href="/admin/about"
-                  className="text-sm hover:text-primary transition-colors"
-                >
-                  About
-                </Link>
-                <Link
-                  href="/admin/projects"
-                  className="text-sm hover:text-primary transition-colors"
-                >
-                  Projects
-                </Link>
-                <Link
-                  href="/admin/testimonials"
-                  className="text-sm hover:text-primary transition-colors"
-                >
-                  Testimonials
-                </Link>
-                <Link
-                  href="/admin/recent-work"
-                  className="text-sm hover:text-primary transition-colors"
-                >
-                  Recent Work
-                </Link>
-                <Link
-                  href="/admin/contact"
-                  className="text-sm hover:text-primary transition-colors"
-                >
-                  Contact
-                </Link>
-                <Link
-                  href="/admin/social"
-                  className="text-sm hover:text-primary transition-colors"
-                >
-                  Social
-                </Link>
-                <Link
-                  href="/admin/logos"
-                  className="text-sm hover:text-primary transition-colors"
-                >
-                  Logos
-                </Link>
-                <Link
-                  href="/admin/seo"
-                  className="text-sm hover:text-primary transition-colors"
-                >
-                  SEO
-                </Link>
-                <Link
-                  href="/admin/resume"
-                  className="text-sm hover:text-primary transition-colors"
-                >
-                  Resume
-                </Link>
-              </div>
+              <AdminNav />
             </div>
             <div className="flex items-center space-x-4">
               <Link href="/" target="_blank" rel="noopener noreferrer" aria-label="View public portfolio site in new tab">
