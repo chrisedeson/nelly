@@ -28,7 +28,12 @@ export default function ContactPage() {
       const response = await fetch("/api/admin/contact");
       const result = await response.json();
       if (result) {
-        setData(result);
+        setData({
+          email: result.email || "",
+          phone: result.phone || "",
+          location: result.location || "",
+          availability_status: result.availability_status || "",
+        });
       }
     } catch (error) {
       console.error("Error fetching data:", error);

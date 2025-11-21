@@ -31,7 +31,14 @@ export default function HeroPage() {
     try {
       const response = await fetch("/api/admin/portfolio");
       const result = await response.json();
-      setData(result);
+      setData({
+        hero_name: result.hero_name || "",
+        hero_tagline: result.hero_tagline || "",
+        hero_description: result.hero_description || "",
+        hero_image_url: result.hero_image_url || "",
+        hero_cta_text: result.hero_cta_text || "",
+        hero_cta_link: result.hero_cta_link || "",
+      });
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {

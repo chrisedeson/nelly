@@ -64,7 +64,11 @@ export default function ProjectsPage() {
 
   const openEditDialog = (project?: Project) => {
     setEditingProject(
-      project || {
+      project ? {
+        ...project,
+        project_url: project.project_url || "",
+        technologies: project.technologies || "",
+      } : {
         id: 0,
         title: "",
         description: "",

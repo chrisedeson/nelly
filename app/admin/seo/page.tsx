@@ -30,7 +30,12 @@ export default function SeoPage() {
       const response = await fetch("/api/admin/seo");
       const result = await response.json();
       if (result) {
-        setData(result);
+        setData({
+          page_title: result.page_title || "",
+          meta_description: result.meta_description || "",
+          og_image_url: result.og_image_url || "",
+          keywords: result.keywords || "",
+        });
       }
     } catch (error) {
       console.error("Error fetching data:", error);

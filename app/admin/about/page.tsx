@@ -32,7 +32,14 @@ export default function AboutPage() {
       const response = await fetch("/api/admin/about");
       const result = await response.json();
       if (result) {
-        setData(result);
+        setData({
+          title: result.title || "",
+          description: result.description || "",
+          image_url: result.image_url || "",
+          years_experience: result.years_experience || 0,
+          projects_completed: result.projects_completed || 0,
+          skills: result.skills || "",
+        });
       }
     } catch (error) {
       console.error("Error fetching data:", error);
