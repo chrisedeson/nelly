@@ -91,7 +91,7 @@ export default function ProjectsPage() {
       </div>
 
       {loading ? (
-        <div>Loading...</div>
+        <div role="status" aria-live="polite">Loading...</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project) => (
@@ -211,9 +211,11 @@ function ProjectDialog({
             <Label htmlFor="title">Title</Label>
             <Input
               id="title"
+              name="title"
               value={data.title}
               onChange={(e) => setData({ ...data, title: e.target.value })}
               required
+              aria-required="true"
             />
           </div>
 
@@ -235,10 +237,13 @@ function ProjectDialog({
             <Label htmlFor="project_url">Project URL (optional)</Label>
             <Input
               id="project_url"
+              name="project_url"
+              type="url"
               value={data.project_url || ""}
               onChange={(e) =>
                 setData({ ...data, project_url: e.target.value })
               }
+              placeholder="https://example.com"
             />
           </div>
 
@@ -246,11 +251,12 @@ function ProjectDialog({
             <Label htmlFor="technologies">Technologies (comma-separated)</Label>
             <Input
               id="technologies"
+              name="technologies"
               value={data.technologies}
               onChange={(e) =>
                 setData({ ...data, technologies: e.target.value })
               }
-              placeholder="React, TypeScript, Node.js..."
+              placeholder="Notion, Jira, Slack, Trello, Asana..."
             />
           </div>
 
@@ -258,12 +264,15 @@ function ProjectDialog({
             <Label htmlFor="order_index">Display Order</Label>
             <Input
               id="order_index"
+              name="order_index"
               type="number"
+              min="0"
               value={data.order_index}
               onChange={(e) =>
                 setData({ ...data, order_index: parseInt(e.target.value) })
               }
               required
+              aria-required="true"
             />
           </div>
 
@@ -271,7 +280,11 @@ function ProjectDialog({
             <Button type="button" variant="outline" onClick={onClose}>
               Cancel
             </Button>
-            <Button type="submit" disabled={saving}>
+            <Button
+              type="submit"
+              disabled={saving}
+              aria-label={saving ? "Saving project" : "Save project"}
+            >
               {saving ? "Saving..." : "Save"}
             </Button>
           </div>

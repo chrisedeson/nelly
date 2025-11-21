@@ -63,29 +63,40 @@ export default function HeroPage() {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div role="status" aria-live="polite" className="text-center py-8">
+        Loading...
+      </div>
+    );
   }
 
   return (
     <div className="max-w-2xl">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Hero Section</h1>
-        <p className="text-muted-foreground">
+        <h1 id="hero-heading" className="text-3xl font-bold mb-2">Hero Section</h1>
+        <p id="hero-description" className="text-muted-foreground">
           Edit your homepage hero section
         </p>
       </div>
 
       <Card className="p-6">
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-6"
+          aria-labelledby="hero-heading"
+          aria-describedby="hero-description"
+        >
           <div className="space-y-2">
             <Label htmlFor="hero_name">Name</Label>
             <Input
               id="hero_name"
+              name="hero_name"
               value={data.hero_name}
               onChange={(e) =>
                 setData({ ...data, hero_name: e.target.value })
               }
               required
+              aria-required="true"
             />
           </div>
 
@@ -93,11 +104,13 @@ export default function HeroPage() {
             <Label htmlFor="hero_tagline">Tagline</Label>
             <Input
               id="hero_tagline"
+              name="hero_tagline"
               value={data.hero_tagline}
               onChange={(e) =>
                 setData({ ...data, hero_tagline: e.target.value })
               }
               required
+              aria-required="true"
             />
           </div>
 
@@ -105,6 +118,7 @@ export default function HeroPage() {
             <Label htmlFor="hero_description">Description</Label>
             <Textarea
               id="hero_description"
+              name="hero_description"
               value={data.hero_description}
               onChange={(e) =>
                 setData({ ...data, hero_description: e.target.value })
@@ -125,6 +139,7 @@ export default function HeroPage() {
             <Label htmlFor="hero_cta_text">Call to Action Text</Label>
             <Input
               id="hero_cta_text"
+              name="hero_cta_text"
               value={data.hero_cta_text || ""}
               onChange={(e) =>
                 setData({ ...data, hero_cta_text: e.target.value })
@@ -136,20 +151,27 @@ export default function HeroPage() {
             <Label htmlFor="hero_cta_link">Call to Action Link</Label>
             <Input
               id="hero_cta_link"
+              name="hero_cta_link"
+              type="url"
               value={data.hero_cta_link || ""}
               onChange={(e) =>
                 setData({ ...data, hero_cta_link: e.target.value })
               }
+              placeholder="https://example.com"
             />
           </div>
 
           <div className="flex justify-between">
             <Button type="button" variant="outline" asChild>
-              <a href="/" target="_blank">
+              <a href="/" target="_blank" rel="noopener noreferrer" aria-label="Preview homepage in new tab">
                 Preview
               </a>
             </Button>
-            <Button type="submit" disabled={saving}>
+            <Button
+              type="submit"
+              disabled={saving}
+              aria-label={saving ? "Saving hero section changes" : "Save hero section changes"}
+            >
               {saving ? "Saving..." : "Save Changes"}
             </Button>
           </div>

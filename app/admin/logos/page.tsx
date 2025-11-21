@@ -83,7 +83,7 @@ export default function LogosPage() {
       </div>
 
       {loading ? (
-        <div>Loading...</div>
+        <div role="status" aria-live="polite">Loading...</div>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {logos.map((logo) => (
@@ -197,11 +197,13 @@ function LogoDialog({
             <Label htmlFor="company_name">Company Name</Label>
             <Input
               id="company_name"
+              name="company_name"
               value={data.company_name}
               onChange={(e) =>
                 setData({ ...data, company_name: e.target.value })
               }
               required
+              aria-required="true"
             />
           </div>
 
@@ -215,12 +217,15 @@ function LogoDialog({
             <Label htmlFor="order_index">Display Order</Label>
             <Input
               id="order_index"
+              name="order_index"
               type="number"
+              min="0"
               value={data.order_index}
               onChange={(e) =>
                 setData({ ...data, order_index: parseInt(e.target.value) })
               }
               required
+              aria-required="true"
             />
           </div>
 
@@ -228,7 +233,11 @@ function LogoDialog({
             <Button type="button" variant="outline" onClick={onClose}>
               Cancel
             </Button>
-            <Button type="submit" disabled={saving}>
+            <Button
+              type="submit"
+              disabled={saving}
+              aria-label={saving ? "Saving company logo" : "Save company logo"}
+            >
               {saving ? "Saving..." : "Save"}
             </Button>
           </div>

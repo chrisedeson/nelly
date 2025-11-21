@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import {
   getPortfolioConfig,
   getProjects,
@@ -5,7 +6,8 @@ import {
   getRecentWork,
   getCompanyLogos,
   getSocialLinks,
-  getResume
+  getResume,
+  getSEOSettings
 } from "@/lib/db";
 import TopMenu from "@/components/portfolio/top-menu";
 import Header from "@/components/portfolio/header";
@@ -14,6 +16,20 @@ import Testimonials from "@/components/portfolio/testimonials";
 import RecentWork from "@/components/portfolio/recent-work";
 import GetInTouch from "@/components/portfolio/get-in-touch";
 import Footer from "@/components/portfolio/footer";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await getSEOSettings();
+
+  return {
+    title: seo?.page_title || "Portfolio",
+    description: seo?.meta_description || "Professional portfolio showcasing my work and experience",
+    openGraph: {
+      title: seo?.page_title || "Portfolio",
+      description: seo?.meta_description || "Professional portfolio showcasing my work and experience",
+      images: seo?.og_image_url ? [seo.og_image_url] : [],
+    },
+  };
+}
 
 export default async function PersonalPortfolioTemplate() {
   // Fetch all data in parallel

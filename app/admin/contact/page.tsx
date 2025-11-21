@@ -61,28 +61,39 @@ export default function ContactPage() {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div role="status" aria-live="polite" className="text-center py-8">
+        Loading...
+      </div>
+    );
   }
 
   return (
     <div className="max-w-2xl">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Contact Information</h1>
-        <p className="text-muted-foreground">
+        <h1 id="contact-heading" className="text-3xl font-bold mb-2">Contact Information</h1>
+        <p id="contact-description" className="text-muted-foreground">
           Edit your contact details
         </p>
       </div>
 
       <Card className="p-6">
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-6"
+          aria-labelledby="contact-heading"
+          aria-describedby="contact-description"
+        >
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
+              name="email"
               type="email"
               value={data.email}
               onChange={(e) => setData({ ...data, email: e.target.value })}
               required
+              aria-required="true"
             />
           </div>
 
@@ -90,6 +101,7 @@ export default function ContactPage() {
             <Label htmlFor="phone">Phone</Label>
             <Input
               id="phone"
+              name="phone"
               value={data.phone}
               onChange={(e) => setData({ ...data, phone: e.target.value })}
             />
@@ -99,6 +111,7 @@ export default function ContactPage() {
             <Label htmlFor="location">Location</Label>
             <Input
               id="location"
+              name="location"
               value={data.location}
               onChange={(e) => setData({ ...data, location: e.target.value })}
               placeholder="City, Country"
@@ -109,6 +122,7 @@ export default function ContactPage() {
             <Label htmlFor="availability_status">Availability Status</Label>
             <Input
               id="availability_status"
+              name="availability_status"
               value={data.availability_status}
               onChange={(e) =>
                 setData({ ...data, availability_status: e.target.value })
@@ -119,11 +133,15 @@ export default function ContactPage() {
 
           <div className="flex justify-between">
             <Button type="button" variant="outline" asChild>
-              <a href="/" target="_blank">
+              <a href="/" target="_blank" rel="noopener noreferrer" aria-label="Preview homepage in new tab">
                 Preview
               </a>
             </Button>
-            <Button type="submit" disabled={saving}>
+            <Button
+              type="submit"
+              disabled={saving}
+              aria-label={saving ? "Saving contact information changes" : "Save contact information changes"}
+            >
               {saving ? "Saving..." : "Save Changes"}
             </Button>
           </div>

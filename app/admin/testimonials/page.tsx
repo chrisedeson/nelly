@@ -91,7 +91,7 @@ export default function TestimonialsPage() {
       </div>
 
       {loading ? (
-        <div>Loading...</div>
+        <div role="status" aria-live="polite">Loading...</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {testimonials.map((testimonial) => (
@@ -219,11 +219,13 @@ function TestimonialDialog({
             <Label htmlFor="client_name">Client Name</Label>
             <Input
               id="client_name"
+              name="client_name"
               value={data.client_name}
               onChange={(e) =>
                 setData({ ...data, client_name: e.target.value })
               }
               required
+              aria-required="true"
             />
           </div>
 
@@ -231,11 +233,13 @@ function TestimonialDialog({
             <Label htmlFor="client_position">Client Position</Label>
             <Input
               id="client_position"
+              name="client_position"
               value={data.client_position}
               onChange={(e) =>
                 setData({ ...data, client_position: e.target.value })
               }
               required
+              aria-required="true"
             />
           </div>
 
@@ -243,11 +247,13 @@ function TestimonialDialog({
             <Label htmlFor="client_company">Client Company</Label>
             <Input
               id="client_company"
+              name="client_company"
               value={data.client_company}
               onChange={(e) =>
                 setData({ ...data, client_company: e.target.value })
               }
               required
+              aria-required="true"
             />
           </div>
 
@@ -255,12 +261,14 @@ function TestimonialDialog({
             <Label htmlFor="testimonial_text">Testimonial Text</Label>
             <Textarea
               id="testimonial_text"
+              name="testimonial_text"
               value={data.testimonial_text}
               onChange={(e) =>
                 setData({ ...data, testimonial_text: e.target.value })
               }
               rows={4}
               required
+              aria-required="true"
             />
           </div>
 
@@ -277,6 +285,7 @@ function TestimonialDialog({
               <Label htmlFor="rating">Rating (1-5)</Label>
               <Input
                 id="rating"
+                name="rating"
                 type="number"
                 min="1"
                 max="5"
@@ -285,6 +294,7 @@ function TestimonialDialog({
                   setData({ ...data, rating: parseInt(e.target.value) })
                 }
                 required
+                aria-required="true"
               />
             </div>
 
@@ -292,12 +302,15 @@ function TestimonialDialog({
               <Label htmlFor="order_index">Display Order</Label>
               <Input
                 id="order_index"
+                name="order_index"
                 type="number"
+                min="0"
                 value={data.order_index}
                 onChange={(e) =>
                   setData({ ...data, order_index: parseInt(e.target.value) })
                 }
                 required
+                aria-required="true"
               />
             </div>
           </div>
@@ -306,7 +319,11 @@ function TestimonialDialog({
             <Button type="button" variant="outline" onClick={onClose}>
               Cancel
             </Button>
-            <Button type="submit" disabled={saving}>
+            <Button
+              type="submit"
+              disabled={saving}
+              aria-label={saving ? "Saving testimonial" : "Save testimonial"}
+            >
               {saving ? "Saving..." : "Save"}
             </Button>
           </div>

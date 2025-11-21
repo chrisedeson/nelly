@@ -90,7 +90,7 @@ export default function RecentWorkPage() {
       </div>
 
       {loading ? (
-        <div>Loading...</div>
+        <div role="status" aria-live="polite">Loading...</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {recentWork.map((work) => (
@@ -209,9 +209,11 @@ function WorkDialog({
             <Label htmlFor="title">Title</Label>
             <Input
               id="title"
+              name="title"
               value={data.title}
               onChange={(e) => setData({ ...data, title: e.target.value })}
               required
+              aria-required="true"
             />
           </div>
 
@@ -219,10 +221,12 @@ function WorkDialog({
             <Label htmlFor="category">Category</Label>
             <Input
               id="category"
+              name="category"
               value={data.category}
               onChange={(e) => setData({ ...data, category: e.target.value })}
               placeholder="e.g., Project Management, Design..."
               required
+              aria-required="true"
             />
           </div>
 
@@ -244,8 +248,11 @@ function WorkDialog({
             <Label htmlFor="work_url">URL (optional)</Label>
             <Input
               id="work_url"
+              name="work_url"
+              type="url"
               value={data.work_url || ""}
               onChange={(e) => setData({ ...data, work_url: e.target.value })}
+              placeholder="https://example.com"
             />
           </div>
 
@@ -253,12 +260,15 @@ function WorkDialog({
             <Label htmlFor="order_index">Display Order</Label>
             <Input
               id="order_index"
+              name="order_index"
               type="number"
+              min="0"
               value={data.order_index}
               onChange={(e) =>
                 setData({ ...data, order_index: parseInt(e.target.value) })
               }
               required
+              aria-required="true"
             />
           </div>
 
@@ -266,7 +276,11 @@ function WorkDialog({
             <Button type="button" variant="outline" onClick={onClose}>
               Cancel
             </Button>
-            <Button type="submit" disabled={saving}>
+            <Button
+              type="submit"
+              disabled={saving}
+              aria-label={saving ? "Saving work item" : "Save work item"}
+            >
               {saving ? "Saving..." : "Save"}
             </Button>
           </div>

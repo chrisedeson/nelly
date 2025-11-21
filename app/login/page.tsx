@@ -1,5 +1,4 @@
 "use client";
-import { toast } from "sonner";
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
@@ -39,29 +38,44 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-800">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-800" role="main">
       <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-2xl">
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Panel</h1>
-          <p className="text-gray-600">Enter your password to continue</p>
+          <p className="text-gray-600" id="login-description">Enter your password to continue</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-6"
+          aria-labelledby="login-title"
+          aria-describedby="login-description"
+        >
           <div>
             <Label htmlFor="password">Password</Label>
             <Input
               id="password"
+              name="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
               required
+              autoComplete="current-password"
+              aria-required="true"
+              aria-invalid={error ? "true" : "false"}
+              aria-describedby={error ? "password-error" : undefined}
               className="mt-1"
             />
           </div>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+            <div
+              id="password-error"
+              className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded"
+              role="alert"
+              aria-live="polite"
+            >
               {error}
             </div>
           )}
@@ -70,14 +84,15 @@ export default function AdminLoginPage() {
             type="submit"
             disabled={loading}
             className="w-full"
+            aria-label={loading ? "Signing in..." : "Sign in to admin panel"}
           >
             {loading ? "Signing in..." : "Sign In"}
           </Button>
         </form>
 
-        <div className="mt-6 text-center text-sm text-gray-600">
+        <div className="mt-6 text-center text-sm text-gray-600" role="note" aria-label="Default credentials information">
           <p>Default password: <code className="bg-gray-100 px-2 py-1 rounded">admin123</code></p>
-          <p className="text-xs mt-2 text-red-600">⚠️ Change this after first login!</p>
+          <p className="text-xs mt-2 text-red-600" role="alert" aria-live="polite">⚠️ Change this after first login!</p>
         </div>
       </div>
     </div>

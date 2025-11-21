@@ -89,7 +89,11 @@ export default function ResumePage() {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div role="status" aria-live="polite" className="text-center py-8">
+        Loading...
+      </div>
+    );
   }
 
   return (
@@ -131,6 +135,7 @@ export default function ResumePage() {
               <Label htmlFor="file">Upload New Resume</Label>
               <Input
                 id="file"
+                name="file"
                 type="file"
                 accept=".pdf"
                 onChange={handleFileChange}
@@ -151,6 +156,7 @@ export default function ResumePage() {
               <Label htmlFor="file">Upload Resume (PDF only)</Label>
               <Input
                 id="file"
+                name="file"
                 type="file"
                 accept=".pdf"
                 onChange={handleFileChange}

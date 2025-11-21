@@ -65,30 +65,41 @@ export default function AboutPage() {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div role="status" aria-live="polite" className="text-center py-8">
+        Loading...
+      </div>
+    );
   }
 
   return (
     <div className="max-w-2xl">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">About Section</h1>
-        <p className="text-muted-foreground">Edit your about section content</p>
+        <h1 id="about-heading" className="text-3xl font-bold mb-2">About Section</h1>
+        <p id="about-description" className="text-muted-foreground">Edit your about section content</p>
       </div>
 
       <Card className="p-6">
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-6"
+          aria-labelledby="about-heading"
+          aria-describedby="about-description"
+        >
           <div className="space-y-2">
             <Label htmlFor="title">Title</Label>
             <Input
               id="title"
+              name="title"
               value={data.title}
               onChange={(e) => setData({ ...data, title: e.target.value })}
               required
+              aria-required="true"
             />
           </div>
 
           <div className="space-y-2">
-            <Label>Description</Label>
+            <Label htmlFor="description">Description</Label>
             <RichTextEditor
               content={data.description}
               onChange={(content) =>
@@ -108,6 +119,7 @@ export default function AboutPage() {
               <Label htmlFor="years_experience">Years of Experience</Label>
               <Input
                 id="years_experience"
+                name="years_experience"
                 type="number"
                 value={data.years_experience}
                 onChange={(e) =>
@@ -117,6 +129,8 @@ export default function AboutPage() {
                   })
                 }
                 required
+                aria-required="true"
+                min="0"
               />
             </div>
 
@@ -124,6 +138,7 @@ export default function AboutPage() {
               <Label htmlFor="projects_completed">Projects Completed</Label>
               <Input
                 id="projects_completed"
+                name="projects_completed"
                 type="number"
                 value={data.projects_completed}
                 onChange={(e) =>
@@ -133,6 +148,8 @@ export default function AboutPage() {
                   })
                 }
                 required
+                aria-required="true"
+                min="0"
               />
             </div>
           </div>
@@ -141,6 +158,7 @@ export default function AboutPage() {
             <Label htmlFor="skills">Skills (comma-separated)</Label>
             <Input
               id="skills"
+              name="skills"
               value={data.skills}
               onChange={(e) => setData({ ...data, skills: e.target.value })}
               placeholder="Project Management, Agile, Scrum..."
@@ -149,11 +167,15 @@ export default function AboutPage() {
 
           <div className="flex justify-between">
             <Button type="button" variant="outline" asChild>
-              <a href="/" target="_blank">
+              <a href="/" target="_blank" rel="noopener noreferrer" aria-label="Preview homepage in new tab">
                 Preview
               </a>
             </Button>
-            <Button type="submit" disabled={saving}>
+            <Button
+              type="submit"
+              disabled={saving}
+              aria-label={saving ? "Saving about section changes" : "Save about section changes"}
+            >
               {saving ? "Saving..." : "Save Changes"}
             </Button>
           </div>

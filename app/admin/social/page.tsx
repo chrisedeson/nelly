@@ -82,7 +82,7 @@ export default function SocialPage() {
       </div>
 
       {loading ? (
-        <div>Loading...</div>
+        <div role="status" aria-live="polite">Loading...</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {socialLinks.map((link) => (
@@ -195,12 +195,14 @@ function SocialDialog({
             <Label htmlFor="platform_name">Platform Name</Label>
             <Input
               id="platform_name"
+              name="platform_name"
               value={data.platform_name}
               onChange={(e) =>
                 setData({ ...data, platform_name: e.target.value })
               }
               placeholder="e.g., LinkedIn, Twitter, GitHub..."
               required
+              aria-required="true"
             />
           </div>
 
@@ -208,12 +210,15 @@ function SocialDialog({
             <Label htmlFor="platform_url">URL</Label>
             <Input
               id="platform_url"
+              name="platform_url"
+              type="url"
               value={data.platform_url}
               onChange={(e) =>
                 setData({ ...data, platform_url: e.target.value })
               }
-              placeholder="https://..."
+              placeholder="https://example.com"
               required
+              aria-required="true"
             />
           </div>
 
@@ -223,12 +228,14 @@ function SocialDialog({
             </Label>
             <Input
               id="icon_name"
+              name="icon_name"
               value={data.icon_name}
               onChange={(e) =>
                 setData({ ...data, icon_name: e.target.value })
               }
               placeholder="e.g., Linkedin, Twitter, Github..."
               required
+              aria-required="true"
             />
           </div>
 
@@ -236,12 +243,15 @@ function SocialDialog({
             <Label htmlFor="order_index">Display Order</Label>
             <Input
               id="order_index"
+              name="order_index"
               type="number"
+              min="0"
               value={data.order_index}
               onChange={(e) =>
                 setData({ ...data, order_index: parseInt(e.target.value) })
               }
               required
+              aria-required="true"
             />
           </div>
 
@@ -249,7 +259,11 @@ function SocialDialog({
             <Button type="button" variant="outline" onClick={onClose}>
               Cancel
             </Button>
-            <Button type="submit" disabled={saving}>
+            <Button
+              type="submit"
+              disabled={saving}
+              aria-label={saving ? "Saving social link" : "Save social link"}
+            >
               {saving ? "Saving..." : "Save"}
             </Button>
           </div>
