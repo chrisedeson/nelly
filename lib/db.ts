@@ -1,9 +1,35 @@
 import { sql } from '@vercel/postgres';
 
+// Retry wrapper for database queries (handles Neon database wake-up delays)
+async function withRetry<T>(
+  operation: () => Promise<T>,
+  maxRetries = 3,
+  delay = 1000
+): Promise<T> {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      return await operation();
+    } catch (error: any) {
+      const isTimeout = error?.code === 'ETIMEDOUT' || error?.cause?.code === 'ETIMEDOUT';
+      const isLastAttempt = attempt === maxRetries;
+
+      if (!isTimeout || isLastAttempt) {
+        throw error;
+      }
+
+      // Wait before retrying (exponential backoff)
+      await new Promise(resolve => setTimeout(resolve, delay * attempt));
+    }
+  }
+  throw new Error('Max retries reached');
+}
+
 // Portfolio Config
 export async function getPortfolioConfig() {
-  const { rows } = await sql`SELECT * FROM portfolio_config LIMIT 1`;
-  return rows[0] || null;
+  return withRetry(async () => {
+    const { rows } = await sql`SELECT * FROM portfolio_config LIMIT 1`;
+    return rows[0] || null;
+  });
 }
 
 export async function updatePortfolioConfig(data: {
@@ -45,11 +71,13 @@ export async function updateAbout(data: { content: string; skills: string[] }) {
 
 // Projects
 export async function getProjects() {
-  const { rows } = await sql`
-    SELECT * FROM projects
-    ORDER BY order_index ASC
-  `;
-  return rows;
+  return withRetry(async () => {
+    const { rows } = await sql`
+      SELECT * FROM projects
+      ORDER BY order_index ASC
+    `;
+    return rows;
+  });
 }
 
 export async function getProject(id: number) {
@@ -102,11 +130,13 @@ export async function deleteProject(id: number) {
 
 // Testimonials
 export async function getTestimonials() {
-  const { rows } = await sql`
-    SELECT * FROM testimonials
-    ORDER BY order_index ASC
-  `;
-  return rows;
+  return withRetry(async () => {
+    const { rows } = await sql`
+      SELECT * FROM testimonials
+      ORDER BY order_index ASC
+    `;
+    return rows;
+  });
 }
 
 export async function getTestimonial(id: number) {
@@ -153,11 +183,13 @@ export async function deleteTestimonial(id: number) {
 
 // Recent Work
 export async function getRecentWork() {
-  const { rows } = await sql`
-    SELECT * FROM recent_work
-    ORDER BY order_index ASC
-  `;
-  return rows;
+  return withRetry(async () => {
+    const { rows } = await sql`
+      SELECT * FROM recent_work
+      ORDER BY order_index ASC
+    `;
+    return rows;
+  });
 }
 
 export async function getRecentWorkItem(id: number) {
@@ -229,11 +261,13 @@ export async function updateContactInfo(data: {
 
 // Social Links
 export async function getSocialLinks() {
-  const { rows } = await sql`
-    SELECT * FROM social_links
-    ORDER BY order_index ASC
-  `;
-  return rows;
+  return withRetry(async () => {
+    const { rows } = await sql`
+      SELECT * FROM social_links
+      ORDER BY order_index ASC
+    `;
+    return rows;
+  });
 }
 
 export async function getSocialLink(id: number) {
@@ -277,11 +311,13 @@ export async function deleteSocialLink(id: number) {
 
 // Company Logos
 export async function getCompanyLogos() {
-  const { rows } = await sql`
-    SELECT * FROM company_logos
-    ORDER BY order_index ASC
-  `;
-  return rows;
+  return withRetry(async () => {
+    const { rows } = await sql`
+      SELECT * FROM company_logos
+      ORDER BY order_index ASC
+    `;
+    return rows;
+  });
 }
 
 export async function getCompanyLogo(id: number) {
@@ -348,8 +384,10 @@ export async function updateSEOSettings(data: {
 
 // Resume
 export async function getResume() {
-  const { rows } = await sql`SELECT * FROM resume LIMIT 1`;
-  return rows[0] || null;
+  return withRetry(async () => {
+    const { rows } = await sql`SELECT * FROM resume LIMIT 1`;
+    return rows[0] || null;
+  });
 }
 
 export async function updateResume(file_url: string) {
@@ -377,8 +415,10 @@ export async function deleteResume() {
 
 // Admin User
 export async function getAdminUser() {
-  const { rows } = await sql`SELECT * FROM admin_user LIMIT 1`;
-  return rows[0] || null;
+  return withRetry(async () => {
+    const { rows } = await sql`SELECT * FROM admin_user LIMIT 1`;
+    return rows[0] || null;
+  });
 }
 
 export async function updateAdminPassword(password_hash: string) {
