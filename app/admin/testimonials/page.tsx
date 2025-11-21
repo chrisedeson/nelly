@@ -170,14 +170,32 @@ function TestimonialDialog({
   onClose: () => void;
   onSave: () => void;
 }) {
-  const [data, setData] = useState<Testimonial | null>(testimonial);
+  const [data, setData] = useState<Testimonial>({
+    id: 0,
+    client_name: "",
+    client_position: "",
+    client_company: "",
+    testimonial_text: "",
+    client_image_url: "",
+    rating: 5,
+    order_index: 1,
+  });
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    setData(testimonial);
+    if (testimonial) {
+      setData({
+        id: testimonial.id || 0,
+        client_name: testimonial.client_name || "",
+        client_position: testimonial.client_position || "",
+        client_company: testimonial.client_company || "",
+        testimonial_text: testimonial.testimonial_text || "",
+        client_image_url: testimonial.client_image_url || "",
+        rating: testimonial.rating || 5,
+        order_index: testimonial.order_index || 1,
+      });
+    }
   }, [testimonial]);
-
-  if (!data) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -230,7 +248,7 @@ function TestimonialDialog({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="client_position">Client Position</Label>
+            <Label htmlFor="client_position">Client Position (optional)</Label>
             <Input
               id="client_position"
               name="client_position"
@@ -238,13 +256,11 @@ function TestimonialDialog({
               onChange={(e) =>
                 setData({ ...data, client_position: e.target.value })
               }
-              required
-              aria-required="true"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="client_company">Client Company</Label>
+            <Label htmlFor="client_company">Client Company (optional)</Label>
             <Input
               id="client_company"
               name="client_company"
@@ -252,8 +268,6 @@ function TestimonialDialog({
               onChange={(e) =>
                 setData({ ...data, client_company: e.target.value })
               }
-              required
-              aria-required="true"
             />
           </div>
 
@@ -282,7 +296,7 @@ function TestimonialDialog({
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="rating">Rating (1-5)</Label>
+              <Label htmlFor="rating">Rating (1-5, optional)</Label>
               <Input
                 id="rating"
                 name="rating"
@@ -291,10 +305,8 @@ function TestimonialDialog({
                 max="5"
                 value={data.rating}
                 onChange={(e) =>
-                  setData({ ...data, rating: parseInt(e.target.value) })
+                  setData({ ...data, rating: parseInt(e.target.value) || 5 })
                 }
-                required
-                aria-required="true"
               />
             </div>
 
@@ -307,7 +319,7 @@ function TestimonialDialog({
                 min="0"
                 value={data.order_index}
                 onChange={(e) =>
-                  setData({ ...data, order_index: parseInt(e.target.value) })
+                  setData({ ...data, order_index: parseInt(e.target.value) || 0 })
                 }
                 required
                 aria-required="true"

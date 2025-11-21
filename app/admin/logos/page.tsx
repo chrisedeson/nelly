@@ -218,22 +218,32 @@ function LogoDialog({
   onClose: () => void;
   onSave: () => void;
 }) {
-  const [data, setData] = useState<CompanyLogo | null>(logo);
+  const [data, setData] = useState<CompanyLogo>({
+    id: 0,
+    company_name: "",
+    logo_url: "",
+    order_index: 1,
+  });
   const [saving, setSaving] = useState(false);
   const [suggestedLogo, setSuggestedLogo] = useState<string>("");
   const [category, setCategory] = useState<string>("");
 
   useEffect(() => {
-    setData(logo);
-    if (logo?.company_name) {
-      const logoUrl = getToolLogo(logo.company_name);
-      const cat = getToolCategory(logo.company_name);
-      setSuggestedLogo(logoUrl);
-      setCategory(cat);
+    if (logo) {
+      setData({
+        id: logo.id || 0,
+        company_name: logo.company_name || "",
+        logo_url: logo.logo_url || "",
+        order_index: logo.order_index || 1,
+      });
+      if (logo.company_name) {
+        const logoUrl = getToolLogo(logo.company_name);
+        const cat = getToolCategory(logo.company_name);
+        setSuggestedLogo(logoUrl);
+        setCategory(cat);
+      }
     }
   }, [logo]);
-
-  if (!data) return null;
 
   const handleCompanyNameChange = (name: string) => {
     setData({ ...data, company_name: name });
@@ -355,7 +365,7 @@ function LogoDialog({
               min="0"
               value={data.order_index}
               onChange={(e) =>
-                setData({ ...data, order_index: parseInt(e.target.value) })
+                setData({ ...data, order_index: parseInt(e.target.value) || 0 })
               }
               required
               aria-required="true"

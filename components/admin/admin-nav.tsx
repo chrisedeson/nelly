@@ -14,6 +14,7 @@ const navLinks = [
   { href: "/admin/logos", label: "Logos" },
   { href: "/admin/seo", label: "SEO" },
   { href: "/admin/resume", label: "Resume" },
+  { href: "/admin/settings", label: "Settings" },
 ];
 
 export default function AdminNav() {

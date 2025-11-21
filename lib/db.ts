@@ -59,7 +59,7 @@ export async function updatePortfolioConfig(data: {
   name: string;
   intro_text: string;
   profile_image_url?: string;
-  cta_text: string;
+  cta_text?: string;
 }) {
   return withRetry(async () => {
     const { rows } = await sql`
@@ -67,7 +67,7 @@ export async function updatePortfolioConfig(data: {
       SET name = ${data.name},
           intro_text = ${data.intro_text},
           profile_image_url = ${data.profile_image_url || null},
-          cta_text = ${data.cta_text},
+          cta_text = ${data.cta_text || ''},
           updated_at = CURRENT_TIMESTAMP
       WHERE id = 1
       RETURNING *
@@ -172,7 +172,17 @@ export async function getTestimonials() {
       SELECT * FROM testimonials
       ORDER BY order_index ASC
     `;
-    return rows;
+    // Map database fields to frontend expected fields
+    return rows.map(row => ({
+      id: row.id,
+      client_name: row.client_name || '',
+      client_position: '', // Not in DB
+      client_company: '', // Not in DB
+      testimonial_text: row.quote || '',
+      client_image_url: row.client_image_url || '',
+      rating: 5, // Not in DB
+      order_index: row.order_index || 0,
+    }));
   });
 }
 
@@ -500,6 +510,13 @@ export async function getAdminUser() {
     const { rows } = await sql`SELECT * FROM admin_user LIMIT 1`;
     return rows[0] || null;
   });
+}
+
+export async function verifyAdminPassword(password: string) {
+  const bcrypt = require('bcryptjs');
+  const user = await getAdminUser();
+  if (!user) return false;
+  return await bcrypt.compare(password, user.password_hash);
 }
 
 export async function updateAdminPassword(password_hash: string) {

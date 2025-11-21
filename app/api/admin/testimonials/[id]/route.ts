@@ -17,7 +17,19 @@ export async function GET(
       );
     }
 
-    return NextResponse.json(testimonial);
+    // Map database fields to frontend expected fields
+    const mapped = {
+      id: testimonial.id,
+      client_name: testimonial.client_name || '',
+      client_position: '', // Not in DB
+      client_company: '', // Not in DB
+      testimonial_text: testimonial.quote || '',
+      client_image_url: testimonial.client_image_url || '',
+      rating: 5, // Not in DB, default to 5
+      order_index: testimonial.order_index || 0,
+    };
+
+    return NextResponse.json(mapped);
   } catch (error) {
     console.error("Error fetching testimonial:", error);
     return NextResponse.json(
@@ -40,7 +52,16 @@ export async function PUT(
   try {
     const { id } = await params;
     const data = await request.json();
-    const testimonial = await updateTestimonial(parseInt(id), data);
+    
+    // Map frontend field names to database field names
+    const dbData = {
+      quote: data.testimonial_text || data.quote || '',
+      client_name: data.client_name || '',
+      client_image_url: data.client_image_url,
+      order_index: data.order_index || 0,
+    };
+    
+    const testimonial = await updateTestimonial(parseInt(id), dbData);
     return NextResponse.json(testimonial);
   } catch (error) {
     console.error("Error updating testimonial:", error);

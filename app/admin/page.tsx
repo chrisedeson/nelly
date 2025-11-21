@@ -11,6 +11,7 @@ import {
   Building2,
   Search,
   FileText,
+  Settings,
 } from "lucide-react";
 
 const sections = [
@@ -74,6 +75,12 @@ const sections = [
     description: "Upload and manage your resume PDF",
     icon: FileText,
     href: "/admin/resume",
+  },
+  {
+    title: "Settings",
+    description: "Change your admin password",
+    icon: Settings,
+    href: "/admin/settings",
   },
 ];
 

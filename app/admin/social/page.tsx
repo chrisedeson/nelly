@@ -148,14 +148,26 @@ function SocialDialog({
   onClose: () => void;
   onSave: () => void;
 }) {
-  const [data, setData] = useState<SocialLink | null>(link);
+  const [data, setData] = useState<SocialLink>({
+    id: 0,
+    platform_name: "",
+    platform_url: "",
+    icon_name: "",
+    order_index: 1,
+  });
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    setData(link);
+    if (link) {
+      setData({
+        id: link.id || 0,
+        platform_name: link.platform_name || "",
+        platform_url: link.platform_url || "",
+        icon_name: link.icon_name || "",
+        order_index: link.order_index || 1,
+      });
+    }
   }, [link]);
-
-  if (!data) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -248,7 +260,7 @@ function SocialDialog({
               min="0"
               value={data.order_index}
               onChange={(e) =>
-                setData({ ...data, order_index: parseInt(e.target.value) })
+                setData({ ...data, order_index: parseInt(e.target.value) || 0 })
               }
               required
               aria-required="true"

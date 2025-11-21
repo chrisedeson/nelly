@@ -162,14 +162,30 @@ function WorkDialog({
   onClose: () => void;
   onSave: () => void;
 }) {
-  const [data, setData] = useState<RecentWork | null>(work);
+  const [data, setData] = useState<RecentWork>({
+    id: 0,
+    title: "",
+    description: "",
+    image_url: "",
+    work_url: "",
+    category: "",
+    order_index: 1,
+  });
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    setData(work);
+    if (work) {
+      setData({
+        id: work.id || 0,
+        title: work.title || "",
+        description: work.description || "",
+        image_url: work.image_url || "",
+        work_url: work.work_url || "",
+        category: work.category || "",
+        order_index: isNaN(work.order_index) ? 1 : work.order_index,
+      });
+    }
   }, [work]);
-
-  if (!data) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -265,7 +281,7 @@ function WorkDialog({
               min="0"
               value={data.order_index}
               onChange={(e) =>
-                setData({ ...data, order_index: parseInt(e.target.value) })
+                setData({ ...data, order_index: parseInt(e.target.value) || 0 })
               }
               required
               aria-required="true"

@@ -166,14 +166,30 @@ function ProjectDialog({
   onClose: () => void;
   onSave: () => void;
 }) {
-  const [data, setData] = useState<Project | null>(project);
+  const [data, setData] = useState<Project>({
+    id: 0,
+    title: "",
+    description: "",
+    technologies: "",
+    image_url: "",
+    project_url: "",
+    order_index: 1,
+  });
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    setData(project);
+    if (project) {
+      setData({
+        id: project.id || 0,
+        title: project.title || "",
+        description: project.description || "",
+        technologies: project.technologies || "",
+        image_url: project.image_url || "",
+        project_url: project.project_url || "",
+        order_index: project.order_index || 1,
+      });
+    }
   }, [project]);
-
-  if (!data) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
