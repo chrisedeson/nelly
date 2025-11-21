@@ -1,6 +1,5 @@
 "use client";
-import { toast } from "sonner";
-
+import { useState } from "react";
 import svgPaths from "@/lib/imports/svg-paths";
 
 interface PortfolioConfig {
@@ -20,6 +19,75 @@ interface CompanyLogo {
 interface Resume {
   file_url: string;
   file_name: string;
+}
+
+function CompanyLogoImage({ logo }: { logo: CompanyLogo }) {
+  const [imageError, setImageError] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  // Generate a consistent gradient based on company name
+  const getGradientColors = (name: string) => {
+    const gradients = [
+      ['#667eea', '#764ba2'], // Purple
+      ['#f093fb', '#f5576c'], // Pink
+      ['#4facfe', '#00f2fe'], // Blue
+      ['#43e97b', '#38f9d7'], // Green
+      ['#fa709a', '#fee140'], // Orange
+      ['#30cfd0', '#330867'], // Teal
+      ['#a8edea', '#fed6e3'], // Pastel
+      ['#ff9a9e', '#fecfef'], // Rose
+      ['#ffecd2', '#fcb69f'], // Peach
+      ['#ff6e7f', '#bfe9ff'], // Sunset
+    ];
+
+    const hash = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    return gradients[hash % gradients.length];
+  };
+
+  const [color1, color2] = getGradientColors(logo.company_name);
+
+  return (
+    <div className="h-14 md:h-16 rounded-md border border-[#1b1b1b] flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Animated gradient fallback */}
+      <div
+        className="absolute inset-0 animate-gradient-shift opacity-20"
+        style={{
+          background: `linear-gradient(135deg, ${color1}, ${color2})`,
+          backgroundSize: '200% 200%',
+        }}
+      >
+        {!imageLoaded && !imageError && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-white font-bold text-xs opacity-50">
+              {logo.company_name.charAt(0).toUpperCase()}
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* Actual image */}
+      {!imageError && (
+        <img
+          src={logo.logo_url}
+          alt={logo.company_name}
+          className={`relative z-10 max-w-full max-h-full object-contain transition-opacity duration-300 ${
+            imageLoaded ? 'opacity-30 hover:opacity-60' : 'opacity-0'
+          }`}
+          onLoad={() => setImageLoaded(true)}
+          onError={() => setImageError(true)}
+        />
+      )}
+
+      {/* Show gradient with company initial when image fails */}
+      {imageError && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="text-white font-bold text-lg opacity-40">
+            {logo.company_name.charAt(0).toUpperCase()}
+          </span>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default function Header({
@@ -122,16 +190,7 @@ export default function Header({
             </p>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
               {logos.map((logo) => (
-                <div
-                  key={logo.company_name}
-                  className="h-14 md:h-16 rounded-md border border-[#1b1b1b] flex items-center justify-center p-4"
-                >
-                  <img
-                    src={logo.logo_url}
-                    alt={logo.company_name}
-                    className="max-w-full max-h-full object-contain opacity-30 hover:opacity-60 transition-opacity"
-                  />
-                </div>
+                <CompanyLogoImage key={logo.company_name} logo={logo} />
               ))}
             </div>
           </div>
