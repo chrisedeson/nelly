@@ -181,10 +181,20 @@ function ProjectDialog({
         : "/api/admin/projects";
       const method = data.id ? "PUT" : "POST";
 
+      // Map frontend field names to backend expected names
+      const payload = {
+        title: data.title,
+        description: data.description,
+        tags: data.technologies || '', // Map technologies to tags
+        image_url: data.image_url,
+        project_link: data.project_url,
+        order_index: data.order_index,
+      };
+
       const response = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) throw new Error("Failed to save");
@@ -269,7 +279,7 @@ function ProjectDialog({
               min="0"
               value={data.order_index}
               onChange={(e) =>
-                setData({ ...data, order_index: parseInt(e.target.value) })
+                setData({ ...data, order_index: parseInt(e.target.value) || 0 })
               }
               required
               aria-required="true"

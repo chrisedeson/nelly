@@ -59,8 +59,10 @@ export async function updatePortfolioConfig(data: {
 
 // About Section
 export async function getAbout() {
-  const { rows } = await sql`SELECT * FROM about LIMIT 1`;
-  return rows[0] || null;
+  return withRetry(async () => {
+    const { rows } = await sql`SELECT * FROM about LIMIT 1`;
+    return rows[0] || null;
+  });
 }
 
 export async function updateAbout(data: { content: string; skills: string[] }) {
@@ -99,12 +101,14 @@ export async function createProject(data: {
   project_link?: string;
   order_index: number;
 }) {
-  const { rows } = await sql`
-    INSERT INTO projects (title, description, tags, image_url, project_link, order_index)
-    VALUES (${data.title}, ${data.description}, ${data.tags}, ${data.image_url || null}, ${data.project_link || null}, ${data.order_index})
-    RETURNING *
-  `;
-  return rows[0];
+  return withRetry(async () => {
+    const { rows } = await sql`
+      INSERT INTO projects (title, description, tags, image_url, project_link, order_index)
+      VALUES (${data.title}, ${data.description}, ${data.tags || ''}, ${data.image_url || null}, ${data.project_link || null}, ${data.order_index})
+      RETURNING *
+    `;
+    return rows[0];
+  });
 }
 
 export async function updateProject(id: number, data: {
@@ -115,19 +119,21 @@ export async function updateProject(id: number, data: {
   project_link?: string;
   order_index: number;
 }) {
-  const { rows } = await sql`
-    UPDATE projects
-    SET title = ${data.title},
-        description = ${data.description},
-        tags = ${data.tags},
-        image_url = ${data.image_url || null},
-        project_link = ${data.project_link || null},
-        order_index = ${data.order_index},
-        updated_at = CURRENT_TIMESTAMP
-    WHERE id = ${id}
-    RETURNING *
-  `;
-  return rows[0];
+  return withRetry(async () => {
+    const { rows } = await sql`
+      UPDATE projects
+      SET title = ${data.title},
+          description = ${data.description},
+          tags = ${data.tags || ''},
+          image_url = ${data.image_url || null},
+          project_link = ${data.project_link || null},
+          order_index = ${data.order_index},
+          updated_at = CURRENT_TIMESTAMP
+      WHERE id = ${id}
+      RETURNING *
+    `;
+    return rows[0];
+  });
 }
 
 export async function deleteProject(id: number) {

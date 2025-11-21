@@ -131,7 +131,7 @@ export default function LogosPage() {
         id: 0,
         company_name: "",
         logo_url: "",
-        order_index: logos.length + 1,
+        order_index: logos.length > 0 ? logos.length + 1 : 1,
       }
     );
     setIsDialogOpen(true);

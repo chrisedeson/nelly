@@ -5,7 +5,7 @@ interface Project {
   title: string;
   description: string;
   image_url: string;
-  project_url?: string;
+  project_link?: string; // Database field name
   technologies: string;
 }
 
@@ -79,9 +79,9 @@ export default function CaseStudies({ projects }: { projects: Project[] }) {
                     className="font-['IBM_Plex_Mono:Regular',sans-serif] text-[#9c9c9c] text-sm leading-relaxed prose prose-sm max-w-none"
                     dangerouslySetInnerHTML={{ __html: project.description }}
                   />
-                  {project.project_url && (
+                  {project.project_link && (
                     <a
-                      href={project.project_url}
+                      href={project.project_link}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-3 px-6 py-3 rounded text-white hover:brightness-110 transition-all"
