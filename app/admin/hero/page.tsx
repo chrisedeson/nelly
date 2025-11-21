@@ -18,7 +18,7 @@ export default function HeroPage() {
   const [data, setData] = useState({
     hero_name: "",
     hero_tagline: "",
-    hero_description: "",
+    // hero_description: "",
     hero_image_url: "",
     hero_cta_text: "",
     hero_cta_link: "",
@@ -36,7 +36,7 @@ export default function HeroPage() {
       setData({
         hero_name: result.hero_name || "",
         hero_tagline: result.hero_tagline || "",
-        hero_description: result.hero_description || "",
+        // hero_description: result.hero_description || "",
         hero_image_url: result.hero_image_url || "",
         hero_cta_text: result.hero_cta_text || "",
         hero_cta_link: ctaLink,
@@ -126,7 +126,7 @@ export default function HeroPage() {
             />
           </div>
 
-          <div className="space-y-2">
+          {/* <div className="space-y-2">
             <Label htmlFor="hero_description">Description</Label>
             <Textarea
               id="hero_description"
@@ -137,7 +137,7 @@ export default function HeroPage() {
               }
               rows={4}
             />
-          </div>
+          </div> */}
 
           <ImageUpload
             label="Hero Image"

@@ -5,7 +5,7 @@ import svgPaths from "@/lib/imports/svg-paths";
 interface PortfolioConfig {
   hero_name: string;
   hero_tagline: string;
-  hero_description?: string;
+  // hero_description?: string;
   hero_image_url?: string;
   hero_cta_text?: string;
   hero_cta_link?: string;
@@ -111,7 +111,7 @@ export default function Header({
       className="bg-[#080808] w-full py-12 md:py-20 lg:py-24 px-4 md:px-8 lg:px-16"
     >
       <div className="max-w-[1440px] mx-auto">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
+        <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-8 lg:gap-12">
           {/* Text Content */}
           <div className="flex-1 max-w-[600px] text-center lg:text-left">
             <div className="mb-6 lg:mb-8">
@@ -121,11 +121,11 @@ export default function Header({
               <p className="font-['IBM_Plex_Mono:Regular',sans-serif] text-[#9c9c9c] text-sm md:text-base leading-relaxed mb-2">
                 {portfolio.hero_tagline}
               </p>
-              {portfolio.hero_description && (
+              {/* {portfolio.hero_description && (
                 <p className="font-['IBM_Plex_Mono:Regular',sans-serif] text-[#9c9c9c] text-sm md:text-base leading-relaxed">
                   {portfolio.hero_description}
                 </p>
-              )}
+              )} */}
             </div>
             <div className="flex flex-col sm:flex-row gap-4 mx-auto lg:mx-0">
               <button

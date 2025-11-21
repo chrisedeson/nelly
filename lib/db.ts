@@ -3,16 +3,18 @@ import { sql } from '@vercel/postgres';
 // Retry wrapper for database queries (handles Neon database wake-up delays)
 async function withRetry<T>(
   operation: () => Promise<T>,
-  maxRetries = 5,
-  delay = 3000
+  maxRetries = 7,
+  baseDelay = 2000
 ): Promise<T> {
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       return await operation();
     } catch (error: any) {
       const isTimeout = error?.code === 'ETIMEDOUT' ||
+                       error?.code === 23 || // TimeoutError code
                        error?.cause?.code === 'ETIMEDOUT' ||
                        error?.message?.includes('fetch failed') ||
+                       error?.message?.includes('timeout') ||
                        error?.sourceError?.message?.includes('fetch failed');
       const isLastAttempt = attempt === maxRetries;
 
@@ -23,8 +25,11 @@ async function withRetry<T>(
       // Log retry attempt for debugging
       console.log(`Database connection timeout, retrying (attempt ${attempt}/${maxRetries})...`);
 
-      // Wait before retrying (exponential backoff: 2s, 4s, 6s, 8s, 10s)
-      await new Promise(resolve => setTimeout(resolve, delay * attempt));
+      // Exponential backoff: 0s (immediate), 2s, 4s, 8s, 16s, 32s
+      const delay = attempt === 1 ? 0 : baseDelay * Math.pow(2, attempt - 2);
+      if (delay > 0) {
+        await new Promise(resolve => setTimeout(resolve, delay));
+      }
     }
   }
   throw new Error('Max retries reached');

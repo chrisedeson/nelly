@@ -10,7 +10,7 @@ export async function GET() {
     const response = {
       hero_name: config?.name || "",
       hero_tagline: config?.intro_text || "",
-      hero_description: config?.hero_description || "",
+      // hero_description: config?.hero_description || "",
       hero_image_url: config?.profile_image_url || "",
       hero_cta_text: config?.cta_text || "",
       hero_cta_link: config?.hero_cta_link || "",
