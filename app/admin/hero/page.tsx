@@ -14,6 +14,7 @@ export default function HeroPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [ctaLinkType, setCtaLinkType] = useState<"default" | "custom">("default");
   const [data, setData] = useState({
     hero_name: "",
     hero_tagline: "",
@@ -31,14 +32,17 @@ export default function HeroPage() {
     try {
       const response = await fetch("/api/admin/portfolio");
       const result = await response.json();
+      const ctaLink = result.hero_cta_link || "";
       setData({
         hero_name: result.hero_name || "",
         hero_tagline: result.hero_tagline || "",
         hero_description: result.hero_description || "",
         hero_image_url: result.hero_image_url || "",
         hero_cta_text: result.hero_cta_text || "",
-        hero_cta_link: result.hero_cta_link || "",
+        hero_cta_link: ctaLink,
       });
+      // Set CTA link type based on existing value
+      setCtaLinkType(ctaLink && ctaLink !== "#contact" ? "custom" : "default");
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -60,8 +64,8 @@ export default function HeroPage() {
       if (!response.ok) throw new Error("Failed to save");
 
       toast.success("Hero section updated successfully!");
-      await fetchData(); // Refresh the form with updated data
-      router.refresh(); // Refresh the page cache
+      router.push("/admin");
+      router.refresh();
     } catch (error) {
       console.error("Error saving:", error);
       toast.error("Failed to save changes");
@@ -155,17 +159,51 @@ export default function HeroPage() {
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="hero_cta_link">Call to Action Link</Label>
+          <div className="space-y-3">
+            <Label>Call to Action Link</Label>
+            <div className="flex gap-6">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="cta_link_type"
+                  value="default"
+                  checked={ctaLinkType === "default"}
+                  onChange={(e) => {
+                    setCtaLinkType("default");
+                    setData({ ...data, hero_cta_link: "#contact" });
+                  }}
+                  className="w-4 h-4"
+                />
+                <span className="text-sm">Default (Contact Section)</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="cta_link_type"
+                  value="custom"
+                  checked={ctaLinkType === "custom"}
+                  onChange={(e) => {
+                    setCtaLinkType("custom");
+                    if (data.hero_cta_link === "#contact") {
+                      setData({ ...data, hero_cta_link: "" });
+                    }
+                  }}
+                  className="w-4 h-4"
+                />
+                <span className="text-sm">Custom URL</span>
+              </label>
+            </div>
             <Input
               id="hero_cta_link"
               name="hero_cta_link"
               type="url"
-              value={data.hero_cta_link || ""}
+              value={ctaLinkType === "default" ? "#contact" : (data.hero_cta_link || "")}
               onChange={(e) =>
                 setData({ ...data, hero_cta_link: e.target.value })
               }
               placeholder="https://example.com"
+              disabled={ctaLinkType === "default"}
+              className={ctaLinkType === "default" ? "opacity-50 cursor-not-allowed" : ""}
             />
           </div>
 

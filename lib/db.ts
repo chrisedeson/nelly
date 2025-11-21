@@ -34,7 +34,19 @@ async function withRetry<T>(
 export async function getPortfolioConfig() {
   return withRetry(async () => {
     const { rows } = await sql`SELECT * FROM portfolio_config LIMIT 1`;
-    return rows[0] || null;
+    const config = rows[0];
+    
+    if (!config) return null;
+    
+    // Map database field names to frontend field names
+    return {
+      hero_name: config.name,
+      hero_tagline: config.intro_text,
+      hero_description: config.hero_description,
+      hero_image_url: config.profile_image_url,
+      hero_cta_text: config.cta_text,
+      hero_cta_link: config.hero_cta_link,
+    };
   });
 }
 
