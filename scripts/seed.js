@@ -133,7 +133,7 @@ async function seedDatabase() {
     console.log('   Password: admin123');
     console.log('\n⚠️  Remember to change the password after first login!');
     console.log('\n🚀 Start the dev server with: pnpm dev');
-    console.log('   Then visit: http://localhost:3000/admin/login\n');
+    console.log('   Then visit: http://localhost:3000/login\n');
 
     process.exit(0);
   } catch (error) {

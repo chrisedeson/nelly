@@ -1,4 +1,5 @@
 "use client";
+import { toast } from "sonner";
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -36,7 +37,7 @@ export default function ResumePage() {
     if (!file) return;
 
     if (!file.type.includes("pdf")) {
-      alert("Please upload a PDF file");
+      toast.warning("Please upload a PDF file");
       return;
     }
 
@@ -65,11 +66,11 @@ export default function ResumePage() {
 
       if (!response.ok) throw new Error("Failed to save resume");
 
-      alert("Resume uploaded successfully!");
+      toast.success("Resume uploaded successfully!");
       fetchResume();
     } catch (error) {
       console.error("Error uploading resume:", error);
-      alert("Failed to upload resume");
+      toast.error("Failed to upload resume");
     } finally {
       setUploading(false);
     }
@@ -83,7 +84,7 @@ export default function ResumePage() {
       setResume(null);
     } catch (error) {
       console.error("Error deleting resume:", error);
-      alert("Failed to delete resume");
+      toast.error("Failed to delete resume");
     }
   };
 

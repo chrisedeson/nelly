@@ -1,4 +1,5 @@
 "use client";
+import { toast } from "sonner";
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -53,11 +54,11 @@ export default function AboutPage() {
 
       if (!response.ok) throw new Error("Failed to save");
 
-      alert("About section updated successfully!");
+      toast.success("About section updated successfully!");
       router.refresh();
     } catch (error) {
       console.error("Error saving:", error);
-      alert("Failed to save changes");
+      toast.error("Failed to save changes");
     } finally {
       setSaving(false);
     }

@@ -1,4 +1,5 @@
 "use client";
+import { toast } from "sonner";
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -191,7 +192,7 @@ function WorkDialog({
       onSave();
     } catch (error) {
       console.error("Error saving work:", error);
-      alert("Failed to save work item");
+      toast.error("Failed to save work item");
     } finally {
       setSaving(false);
     }

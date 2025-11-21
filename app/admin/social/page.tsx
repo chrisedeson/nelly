@@ -1,4 +1,5 @@
 "use client";
+import { toast } from "sonner";
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -175,7 +176,7 @@ function SocialDialog({
       onSave();
     } catch (error) {
       console.error("Error saving social link:", error);
-      alert("Failed to save social link");
+      toast.error("Failed to save social link");
     } finally {
       setSaving(false);
     }

@@ -1,4 +1,5 @@
 "use client";
+import { toast } from "sonner";
 
 import { useState } from "react";
 import svgPaths from "@/lib/imports/svg-paths";
@@ -24,11 +25,11 @@ export default function GetInTouch() {
 
       if (!response.ok) throw new Error("Failed to send message");
 
-      alert("Thank you for your message! I'll get back to you soon.");
+      toast.success("Thank you for your message! I'll get back to you soon.");
       setFormData({ name: "", email: "", message: "" });
     } catch (error) {
       console.error("Error sending message:", error);
-      alert("Failed to send message. Please try again.");
+      toast.error("Failed to send message. Please try again.");
     } finally {
       setSubmitting(false);
     }

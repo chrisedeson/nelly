@@ -4,7 +4,8 @@ import {
   getTestimonials,
   getRecentWork,
   getCompanyLogos,
-  getSocialLinks
+  getSocialLinks,
+  getResume
 } from "@/lib/db";
 import TopMenu from "@/components/portfolio/top-menu";
 import Header from "@/components/portfolio/header";
@@ -16,7 +17,7 @@ import Footer from "@/components/portfolio/footer";
 
 export default async function PersonalPortfolioTemplate() {
   // Fetch all data in parallel
-  const [portfolio, projects, testimonials, recentWork, logos, socialLinks] =
+  const [portfolio, projects, testimonials, recentWork, logos, socialLinks, resume] =
     await Promise.all([
       getPortfolioConfig(),
       getProjects(),
@@ -24,12 +25,13 @@ export default async function PersonalPortfolioTemplate() {
       getRecentWork(),
       getCompanyLogos(),
       getSocialLinks(),
+      getResume(),
     ]);
 
   return (
     <div className="bg-white min-h-screen w-full">
       <TopMenu socialLinks={socialLinks as any} />
-      <Header portfolio={portfolio as any} logos={logos as any} />
+      <Header portfolio={portfolio as any} logos={logos as any} resume={resume as any} />
       <CaseStudies projects={projects as any} />
       <Testimonials testimonials={testimonials as any} />
       <RecentWork recentWork={recentWork as any} />

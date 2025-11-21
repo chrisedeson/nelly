@@ -1,4 +1,5 @@
 "use client";
+import { toast } from "sonner";
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -191,7 +192,7 @@ function ProjectDialog({
       onSave();
     } catch (error) {
       console.error("Error saving project:", error);
-      alert("Failed to save project");
+      toast.error("Failed to save project");
     } finally {
       setSaving(false);
     }

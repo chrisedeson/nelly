@@ -1,4 +1,5 @@
 "use client";
+import { toast } from "sonner";
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -44,7 +45,7 @@ export function ImageUpload({
       onImageChange(data.url);
     } catch (error) {
       console.error("Error uploading file:", error);
-      alert("Failed to upload file");
+      toast.error("Failed to upload file");
     } finally {
       setUploading(false);
     }

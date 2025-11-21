@@ -36,21 +36,24 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   pages: {
-    signIn: "/admin/login",
+    signIn: "/login",
   },
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const isOnAdminPanel = nextUrl.pathname.startsWith("/admin");
-      const isOnLoginPage = nextUrl.pathname === "/admin/login";
+      const isOnLoginPage = nextUrl.pathname === "/login";
 
-      if (isOnAdminPanel) {
-        if (isOnLoginPage) {
-          return true;
-        }
+      // Allow access to login page always
+      if (isOnLoginPage) {
+        return true;
+      }
+
+      // For other admin pages, require authentication
+      if (nextUrl.pathname.startsWith("/admin")) {
         return isLoggedIn;
       }
 
+      // Allow all other pages
       return true;
     },
   },

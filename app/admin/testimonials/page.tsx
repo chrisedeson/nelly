@@ -1,4 +1,5 @@
 "use client";
+import { toast } from "sonner";
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -199,7 +200,7 @@ function TestimonialDialog({
       onSave();
     } catch (error) {
       console.error("Error saving testimonial:", error);
-      alert("Failed to save testimonial");
+      toast.error("Failed to save testimonial");
     } finally {
       setSaving(false);
     }

@@ -1,4 +1,5 @@
 "use client";
+import { toast } from "sonner";
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -179,7 +180,7 @@ function LogoDialog({
       onSave();
     } catch (error) {
       console.error("Error saving logo:", error);
-      alert("Failed to save logo");
+      toast.error("Failed to save logo");
     } finally {
       setSaving(false);
     }

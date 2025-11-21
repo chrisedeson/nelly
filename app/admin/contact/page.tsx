@@ -1,4 +1,5 @@
 "use client";
+import { toast } from "sonner";
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -49,11 +50,11 @@ export default function ContactPage() {
 
       if (!response.ok) throw new Error("Failed to save");
 
-      alert("Contact info updated successfully!");
+      toast.success("Contact info updated successfully!");
       router.refresh();
     } catch (error) {
       console.error("Error saving:", error);
-      alert("Failed to save changes");
+      toast.error("Failed to save changes");
     } finally {
       setSaving(false);
     }
