@@ -44,17 +44,19 @@ export async function updatePortfolioConfig(data: {
   profile_image_url?: string;
   cta_text: string;
 }) {
-  const { rows } = await sql`
-    UPDATE portfolio_config
-    SET name = ${data.name},
-        intro_text = ${data.intro_text},
-        profile_image_url = ${data.profile_image_url || null},
-        cta_text = ${data.cta_text},
-        updated_at = CURRENT_TIMESTAMP
-    WHERE id = 1
-    RETURNING *
-  `;
-  return rows[0];
+  return withRetry(async () => {
+    const { rows } = await sql`
+      UPDATE portfolio_config
+      SET name = ${data.name},
+          intro_text = ${data.intro_text},
+          profile_image_url = ${data.profile_image_url || null},
+          cta_text = ${data.cta_text},
+          updated_at = CURRENT_TIMESTAMP
+      WHERE id = 1
+      RETURNING *
+    `;
+    return rows[0];
+  });
 }
 
 // About Section
@@ -66,15 +68,17 @@ export async function getAbout() {
 }
 
 export async function updateAbout(data: { content: string; skills: string[] }) {
-  const { rows } = await sql`
-    UPDATE about
-    SET content = ${data.content},
-        skills = ${JSON.stringify(data.skills)}::jsonb,
-        updated_at = CURRENT_TIMESTAMP
-    WHERE id = 1
-    RETURNING *
-  `;
-  return rows[0];
+  return withRetry(async () => {
+    const { rows } = await sql`
+      UPDATE about
+      SET content = ${data.content},
+          skills = ${JSON.stringify(data.skills)}::jsonb,
+          updated_at = CURRENT_TIMESTAMP
+      WHERE id = 1
+      RETURNING *
+    `;
+    return rows[0];
+  });
 }
 
 // Projects
@@ -89,8 +93,10 @@ export async function getProjects() {
 }
 
 export async function getProject(id: number) {
-  const { rows } = await sql`SELECT * FROM projects WHERE id = ${id}`;
-  return rows[0] || null;
+  return withRetry(async () => {
+    const { rows } = await sql`SELECT * FROM projects WHERE id = ${id}`;
+    return rows[0] || null;
+  });
 }
 
 export async function createProject(data: {
@@ -137,7 +143,9 @@ export async function updateProject(id: number, data: {
 }
 
 export async function deleteProject(id: number) {
-  await sql`DELETE FROM projects WHERE id = ${id}`;
+  return withRetry(async () => {
+    await sql`DELETE FROM projects WHERE id = ${id}`;
+  });
 }
 
 // Testimonials
@@ -152,8 +160,10 @@ export async function getTestimonials() {
 }
 
 export async function getTestimonial(id: number) {
-  const { rows } = await sql`SELECT * FROM testimonials WHERE id = ${id}`;
-  return rows[0] || null;
+  return withRetry(async () => {
+    const { rows } = await sql`SELECT * FROM testimonials WHERE id = ${id}`;
+    return rows[0] || null;
+  });
 }
 
 export async function createTestimonial(data: {
@@ -162,12 +172,14 @@ export async function createTestimonial(data: {
   client_image_url?: string;
   order_index: number;
 }) {
-  const { rows } = await sql`
-    INSERT INTO testimonials (quote, client_name, client_image_url, order_index)
-    VALUES (${data.quote}, ${data.client_name}, ${data.client_image_url || null}, ${data.order_index})
-    RETURNING *
-  `;
-  return rows[0];
+  return withRetry(async () => {
+    const { rows } = await sql`
+      INSERT INTO testimonials (quote, client_name, client_image_url, order_index)
+      VALUES (${data.quote}, ${data.client_name}, ${data.client_image_url || null}, ${data.order_index})
+      RETURNING *
+    `;
+    return rows[0];
+  });
 }
 
 export async function updateTestimonial(id: number, data: {
@@ -176,21 +188,25 @@ export async function updateTestimonial(id: number, data: {
   client_image_url?: string;
   order_index: number;
 }) {
-  const { rows } = await sql`
-    UPDATE testimonials
-    SET quote = ${data.quote},
-        client_name = ${data.client_name},
-        client_image_url = ${data.client_image_url || null},
-        order_index = ${data.order_index},
-        updated_at = CURRENT_TIMESTAMP
-    WHERE id = ${id}
-    RETURNING *
-  `;
-  return rows[0];
+  return withRetry(async () => {
+    const { rows } = await sql`
+      UPDATE testimonials
+      SET quote = ${data.quote},
+          client_name = ${data.client_name},
+          client_image_url = ${data.client_image_url || null},
+          order_index = ${data.order_index},
+          updated_at = CURRENT_TIMESTAMP
+      WHERE id = ${id}
+      RETURNING *
+    `;
+    return rows[0];
+  });
 }
 
 export async function deleteTestimonial(id: number) {
-  await sql`DELETE FROM testimonials WHERE id = ${id}`;
+  return withRetry(async () => {
+    await sql`DELETE FROM testimonials WHERE id = ${id}`;
+  });
 }
 
 // Recent Work
@@ -205,8 +221,10 @@ export async function getRecentWork() {
 }
 
 export async function getRecentWorkItem(id: number) {
-  const { rows } = await sql`SELECT * FROM recent_work WHERE id = ${id}`;
-  return rows[0] || null;
+  return withRetry(async () => {
+    const { rows } = await sql`SELECT * FROM recent_work WHERE id = ${id}`;
+    return rows[0] || null;
+  });
 }
 
 export async function createRecentWork(data: {
@@ -215,12 +233,14 @@ export async function createRecentWork(data: {
   image_url?: string;
   order_index: number;
 }) {
-  const { rows } = await sql`
-    INSERT INTO recent_work (title, description, image_url, order_index)
-    VALUES (${data.title}, ${data.description}, ${data.image_url || null}, ${data.order_index})
-    RETURNING *
-  `;
-  return rows[0];
+  return withRetry(async () => {
+    const { rows } = await sql`
+      INSERT INTO recent_work (title, description, image_url, order_index)
+      VALUES (${data.title}, ${data.description}, ${data.image_url || null}, ${data.order_index})
+      RETURNING *
+    `;
+    return rows[0];
+  });
 }
 
 export async function updateRecentWork(id: number, data: {
@@ -229,27 +249,33 @@ export async function updateRecentWork(id: number, data: {
   image_url?: string;
   order_index: number;
 }) {
-  const { rows } = await sql`
-    UPDATE recent_work
-    SET title = ${data.title},
-        description = ${data.description},
-        image_url = ${data.image_url || null},
-        order_index = ${data.order_index},
-        updated_at = CURRENT_TIMESTAMP
-    WHERE id = ${id}
-    RETURNING *
-  `;
-  return rows[0];
+  return withRetry(async () => {
+    const { rows } = await sql`
+      UPDATE recent_work
+      SET title = ${data.title},
+          description = ${data.description},
+          image_url = ${data.image_url || null},
+          order_index = ${data.order_index},
+          updated_at = CURRENT_TIMESTAMP
+      WHERE id = ${id}
+      RETURNING *
+    `;
+    return rows[0];
+  });
 }
 
 export async function deleteRecentWork(id: number) {
-  await sql`DELETE FROM recent_work WHERE id = ${id}`;
+  return withRetry(async () => {
+    await sql`DELETE FROM recent_work WHERE id = ${id}`;
+  });
 }
 
 // Contact Info
 export async function getContactInfo() {
-  const { rows } = await sql`SELECT * FROM contact_info LIMIT 1`;
-  return rows[0] || null;
+  return withRetry(async () => {
+    const { rows } = await sql`SELECT * FROM contact_info LIMIT 1`;
+    return rows[0] || null;
+  });
 }
 
 export async function updateContactInfo(data: {
@@ -258,17 +284,19 @@ export async function updateContactInfo(data: {
   location?: string;
   receiver_email: string;
 }) {
-  const { rows } = await sql`
-    UPDATE contact_info
-    SET email = ${data.email || null},
-        phone = ${data.phone || null},
-        location = ${data.location || null},
-        receiver_email = ${data.receiver_email},
-        updated_at = CURRENT_TIMESTAMP
-    WHERE id = 1
-    RETURNING *
-  `;
-  return rows[0];
+  return withRetry(async () => {
+    const { rows } = await sql`
+      UPDATE contact_info
+      SET email = ${data.email || null},
+          phone = ${data.phone || null},
+          location = ${data.location || null},
+          receiver_email = ${data.receiver_email},
+          updated_at = CURRENT_TIMESTAMP
+      WHERE id = 1
+      RETURNING *
+    `;
+    return rows[0];
+  });
 }
 
 // Social Links
@@ -283,8 +311,10 @@ export async function getSocialLinks() {
 }
 
 export async function getSocialLink(id: number) {
-  const { rows } = await sql`SELECT * FROM social_links WHERE id = ${id}`;
-  return rows[0] || null;
+  return withRetry(async () => {
+    const { rows } = await sql`SELECT * FROM social_links WHERE id = ${id}`;
+    return rows[0] || null;
+  });
 }
 
 export async function createSocialLink(data: {
@@ -292,12 +322,14 @@ export async function createSocialLink(data: {
   url: string;
   order_index: number;
 }) {
-  const { rows } = await sql`
-    INSERT INTO social_links (platform, url, order_index)
-    VALUES (${data.platform}, ${data.url}, ${data.order_index})
-    RETURNING *
-  `;
-  return rows[0];
+  return withRetry(async () => {
+    const { rows } = await sql`
+      INSERT INTO social_links (platform, url, order_index)
+      VALUES (${data.platform}, ${data.url}, ${data.order_index})
+      RETURNING *
+    `;
+    return rows[0];
+  });
 }
 
 export async function updateSocialLink(id: number, data: {
@@ -305,20 +337,24 @@ export async function updateSocialLink(id: number, data: {
   url: string;
   order_index: number;
 }) {
-  const { rows } = await sql`
-    UPDATE social_links
-    SET platform = ${data.platform},
-        url = ${data.url},
-        order_index = ${data.order_index},
-        updated_at = CURRENT_TIMESTAMP
-    WHERE id = ${id}
-    RETURNING *
-  `;
-  return rows[0];
+  return withRetry(async () => {
+    const { rows } = await sql`
+      UPDATE social_links
+      SET platform = ${data.platform},
+          url = ${data.url},
+          order_index = ${data.order_index},
+          updated_at = CURRENT_TIMESTAMP
+      WHERE id = ${id}
+      RETURNING *
+    `;
+    return rows[0];
+  });
 }
 
 export async function deleteSocialLink(id: number) {
-  await sql`DELETE FROM social_links WHERE id = ${id}`;
+  return withRetry(async () => {
+    await sql`DELETE FROM social_links WHERE id = ${id}`;
+  });
 }
 
 // Company Logos
@@ -333,8 +369,10 @@ export async function getCompanyLogos() {
 }
 
 export async function getCompanyLogo(id: number) {
-  const { rows } = await sql`SELECT * FROM company_logos WHERE id = ${id}`;
-  return rows[0] || null;
+  return withRetry(async () => {
+    const { rows } = await sql`SELECT * FROM company_logos WHERE id = ${id}`;
+    return rows[0] || null;
+  });
 }
 
 export async function createCompanyLogo(data: {
@@ -342,12 +380,14 @@ export async function createCompanyLogo(data: {
   logo_url?: string;
   order_index: number;
 }) {
-  const { rows } = await sql`
-    INSERT INTO company_logos (company_name, logo_url, order_index)
-    VALUES (${data.company_name}, ${data.logo_url || null}, ${data.order_index})
-    RETURNING *
-  `;
-  return rows[0];
+  return withRetry(async () => {
+    const { rows } = await sql`
+      INSERT INTO company_logos (company_name, logo_url, order_index)
+      VALUES (${data.company_name}, ${data.logo_url || null}, ${data.order_index})
+      RETURNING *
+    `;
+    return rows[0];
+  });
 }
 
 export async function updateCompanyLogo(id: number, data: {
@@ -355,26 +395,32 @@ export async function updateCompanyLogo(id: number, data: {
   logo_url?: string;
   order_index: number;
 }) {
-  const { rows } = await sql`
-    UPDATE company_logos
-    SET company_name = ${data.company_name},
-        logo_url = ${data.logo_url || null},
-        order_index = ${data.order_index},
-        updated_at = CURRENT_TIMESTAMP
-    WHERE id = ${id}
-    RETURNING *
-  `;
-  return rows[0];
+  return withRetry(async () => {
+    const { rows } = await sql`
+      UPDATE company_logos
+      SET company_name = ${data.company_name},
+          logo_url = ${data.logo_url || null},
+          order_index = ${data.order_index},
+          updated_at = CURRENT_TIMESTAMP
+      WHERE id = ${id}
+      RETURNING *
+    `;
+    return rows[0];
+  });
 }
 
 export async function deleteCompanyLogo(id: number) {
-  await sql`DELETE FROM company_logos WHERE id = ${id}`;
+  return withRetry(async () => {
+    await sql`DELETE FROM company_logos WHERE id = ${id}`;
+  });
 }
 
 // SEO Settings
 export async function getSEOSettings() {
-  const { rows } = await sql`SELECT * FROM seo_settings LIMIT 1`;
-  return rows[0] || null;
+  return withRetry(async () => {
+    const { rows } = await sql`SELECT * FROM seo_settings LIMIT 1`;
+    return rows[0] || null;
+  });
 }
 
 export async function updateSEOSettings(data: {
@@ -382,16 +428,18 @@ export async function updateSEOSettings(data: {
   meta_description: string;
   og_image_url?: string;
 }) {
-  const { rows } = await sql`
-    UPDATE seo_settings
-    SET page_title = ${data.page_title},
-        meta_description = ${data.meta_description},
-        og_image_url = ${data.og_image_url || null},
-        updated_at = CURRENT_TIMESTAMP
-    WHERE id = 1
-    RETURNING *
-  `;
-  return rows[0];
+  return withRetry(async () => {
+    const { rows } = await sql`
+      UPDATE seo_settings
+      SET page_title = ${data.page_title},
+          meta_description = ${data.meta_description},
+          og_image_url = ${data.og_image_url || null},
+          updated_at = CURRENT_TIMESTAMP
+      WHERE id = 1
+      RETURNING *
+    `;
+    return rows[0];
+  });
 }
 
 // Resume
@@ -403,26 +451,30 @@ export async function getResume() {
 }
 
 export async function updateResume(file_url: string) {
-  const { rows } = await sql`
-    UPDATE resume
-    SET file_url = ${file_url},
-        updated_at = CURRENT_TIMESTAMP
-    WHERE id = 1
-    RETURNING *
-  `;
-  if (rows.length === 0) {
-    const { rows: newRows } = await sql`
-      INSERT INTO resume (file_url)
-      VALUES (${file_url})
+  return withRetry(async () => {
+    const { rows } = await sql`
+      UPDATE resume
+      SET file_url = ${file_url},
+          updated_at = CURRENT_TIMESTAMP
+      WHERE id = 1
       RETURNING *
     `;
-    return newRows[0];
-  }
-  return rows[0];
+    if (rows.length === 0) {
+      const { rows: newRows } = await sql`
+        INSERT INTO resume (file_url)
+        VALUES (${file_url})
+        RETURNING *
+      `;
+      return newRows[0];
+    }
+    return rows[0];
+  });
 }
 
 export async function deleteResume() {
-  await sql`DELETE FROM resume WHERE id = 1`;
+  return withRetry(async () => {
+    await sql`DELETE FROM resume WHERE id = 1`;
+  });
 }
 
 // Admin User
@@ -434,14 +486,16 @@ export async function getAdminUser() {
 }
 
 export async function updateAdminPassword(password_hash: string) {
-  const { rows } = await sql`
-    UPDATE admin_user
-    SET password_hash = ${password_hash},
-        updated_at = CURRENT_TIMESTAMP
-    WHERE id = 1
-    RETURNING *
-  `;
-  return rows[0];
+  return withRetry(async () => {
+    const { rows } = await sql`
+      UPDATE admin_user
+      SET password_hash = ${password_hash},
+          updated_at = CURRENT_TIMESTAMP
+      WHERE id = 1
+      RETURNING *
+    `;
+    return rows[0];
+  });
 }
 
 // Contact Form Submissions
@@ -451,19 +505,23 @@ export async function createContactSubmission(data: {
   phone?: string;
   message: string;
 }) {
-  const { rows } = await sql`
-    INSERT INTO contact_submissions (name, email, phone, message)
-    VALUES (${data.name || null}, ${data.email}, ${data.phone || null}, ${data.message})
-    RETURNING *
-  `;
-  return rows[0];
+  return withRetry(async () => {
+    const { rows } = await sql`
+      INSERT INTO contact_submissions (name, email, phone, message)
+      VALUES (${data.name || null}, ${data.email}, ${data.phone || null}, ${data.message})
+      RETURNING *
+    `;
+    return rows[0];
+  });
 }
 
 export async function getContactSubmissions() {
-  const { rows } = await sql`
-    SELECT * FROM contact_submissions
-    ORDER BY created_at DESC
-    LIMIT 100
-  `;
-  return rows;
+  return withRetry(async () => {
+    const { rows } = await sql`
+      SELECT * FROM contact_submissions
+      ORDER BY created_at DESC
+      LIMIT 100
+    `;
+    return rows;
+  });
 }

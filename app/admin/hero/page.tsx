@@ -60,7 +60,8 @@ export default function HeroPage() {
       if (!response.ok) throw new Error("Failed to save");
 
       toast.success("Hero section updated successfully!");
-      router.refresh();
+      await fetchData(); // Refresh the form with updated data
+      router.refresh(); // Refresh the page cache
     } catch (error) {
       console.error("Error saving:", error);
       toast.error("Failed to save changes");

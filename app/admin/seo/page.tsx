@@ -58,6 +58,7 @@ export default function SeoPage() {
       if (!response.ok) throw new Error("Failed to save");
 
       toast.success("SEO settings updated successfully!");
+      await fetchData(); // Refresh the form with updated data
       router.refresh();
     } catch (error) {
       console.error("Error saving:", error);

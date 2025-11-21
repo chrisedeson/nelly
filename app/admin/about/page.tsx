@@ -62,6 +62,7 @@ export default function AboutPage() {
       if (!response.ok) throw new Error("Failed to save");
 
       toast.success("About section updated successfully!");
+      await fetchData(); // Refresh the form with updated data
       router.refresh();
     } catch (error) {
       console.error("Error saving:", error);

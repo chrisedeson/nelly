@@ -56,6 +56,7 @@ export default function ContactPage() {
       if (!response.ok) throw new Error("Failed to save");
 
       toast.success("Contact info updated successfully!");
+      await fetchData(); // Refresh the form with updated data
       router.refresh();
     } catch (error) {
       console.error("Error saving:", error);
