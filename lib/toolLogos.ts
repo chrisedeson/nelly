@@ -184,7 +184,6 @@ export const getToolLogo = (toolName?: string): string => {
 
     // Documentation & Knowledge Base
     'confluence': 'https://logo.clearbit.com/atlassian.com',
-    'notion': 'https://logo.clearbit.com/notion.so',
     'google docs': 'https://logo.clearbit.com/google.com',
     'docs': 'https://logo.clearbit.com/google.com',
     'microsoft word': 'https://logo.clearbit.com/microsoft.com',
@@ -243,7 +242,6 @@ export const getToolLogo = (toolName?: string): string => {
     'dashlane': 'https://logo.clearbit.com/dashlane.com',
     'duo': 'https://logo.clearbit.com/duo.com',
     'yubikey': 'https://logo.clearbit.com/yubico.com',
-    'cloudflare': 'https://logo.clearbit.com/cloudflare.com',
 
     // Social Media & Content
     'twitter': 'https://logo.clearbit.com/twitter.com',
@@ -262,7 +260,6 @@ export const getToolLogo = (toolName?: string): string => {
     'sprout social': 'https://logo.clearbit.com/sproutsocial.com',
 
     // Customer Support
-    'zendesk': 'https://logo.clearbit.com/zendesk.com',
     'freshdesk': 'https://logo.clearbit.com/freshdesk.com',
     'help scout': 'https://logo.clearbit.com/helpscout.com',
     'helpscout': 'https://logo.clearbit.com/helpscout.com',

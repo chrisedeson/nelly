@@ -212,7 +212,7 @@ function SocialDialog({
               onChange={(e) =>
                 setData({ ...data, platform_name: e.target.value })
               }
-              placeholder="e.g., LinkedIn, Twitter, GitHub..."
+              placeholder="e.g., LinkedIn, X, GitHub..."
               required
               aria-required="true"
             />

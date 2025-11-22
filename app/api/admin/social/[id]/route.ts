@@ -21,7 +21,15 @@ export async function GET(
       );
     }
 
-    return NextResponse.json(socialLink);
+    // Map database fields to frontend expected fields
+    const mapped = {
+      id: socialLink.id,
+      platform_name: socialLink.platform || '',
+      platform_url: socialLink.url || '',
+      icon_name: socialLink.platform || '',
+      order_index: socialLink.order_index || 0,
+    };
+    return NextResponse.json(mapped);
   } catch (error) {
     console.error("Error fetching social link:", error);
     return NextResponse.json(
@@ -44,7 +52,13 @@ export async function PUT(
   try {
     const { id } = await params;
     const data = await request.json();
-    const socialLink = await updateSocialLink(parseInt(id), data);
+    // Map frontend fields to database fields
+    const dbData = {
+      platform: data.platform_name || data.platform || '',
+      url: data.platform_url || data.url || '',
+      order_index: data.order_index || 0,
+    };
+    const socialLink = await updateSocialLink(parseInt(id), dbData);
     return NextResponse.json(socialLink);
   } catch (error) {
     console.error("Error updating social link:", error);

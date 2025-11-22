@@ -5,7 +5,15 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET() {
   try {
     const socialLinks = await getSocialLinks();
-    return NextResponse.json(socialLinks);
+    // Map database fields to frontend expected fields
+    const mapped = socialLinks.map((link: any) => ({
+      id: link.id,
+      platform_name: link.platform || '',
+      platform_url: link.url || '',
+      icon_name: link.platform || '', // Use platform name as icon name
+      order_index: link.order_index || 0,
+    }));
+    return NextResponse.json(mapped);
   } catch (error) {
     console.error("Error fetching social links:", error);
     return NextResponse.json(
@@ -24,7 +32,13 @@ export async function POST(request: NextRequest) {
 
   try {
     const data = await request.json();
-    const socialLink = await createSocialLink(data);
+    // Map frontend fields to database fields
+    const dbData = {
+      platform: data.platform_name || data.platform || '',
+      url: data.platform_url || data.url || '',
+      order_index: data.order_index || 0,
+    };
+    const socialLink = await createSocialLink(dbData);
     return NextResponse.json(socialLink);
   } catch (error) {
     console.error("Error creating social link:", error);
