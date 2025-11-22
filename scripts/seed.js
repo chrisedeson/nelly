@@ -58,11 +58,11 @@ async function seedDatabase() {
     await sql`
       INSERT INTO company_logos (company_name, logo_url, order_index)
       VALUES 
-        ('ClickUp', 'https://logo.clearbit.com/clickup.com', 1),
-        ('Figma', 'https://logo.clearbit.com/figma.com', 2),
-        ('Notion', 'https://logo.clearbit.com/notion.so', 3),
-        ('Slack', 'https://logo.clearbit.com/slack.com', 4),
-        ('Trello', 'https://logo.clearbit.com/trello.com', 5)
+        ('Clickup', 'https://logo.clearbit.com/clickup.com', 1),
+        ('Trello', 'https://ggqolvq6uoabo67x.public.blob.vercel-storage.com/Trello-woVxXDNvbh00IM27X5iw3dSHl12ReT.png', 2),
+        ('Stripe', 'https://ggqolvq6uoabo67x.public.blob.vercel-storage.com/stripy-XLvfA4JszzcpmeGNHryNG5oMvqMM1m.png', 3),
+        ('Jira', 'https://ggqolvq6uoabo67x.public.blob.vercel-storage.com/Jira-sp8qr2dNtHL2RyJT38FScuwCcPjJzv.png', 4),
+        ('Google Workspace', 'https://ggqolvq6uoabo67x.public.blob.vercel-storage.com/Google_Workspace-55RteHOujFKs79j9gguBIQmrTY8TtY.png', 5)
       ON CONFLICT DO NOTHING
     `;
     console.log('✅ Sample company logos added');
