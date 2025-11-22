@@ -370,12 +370,13 @@ export async function getSocialLink(id: number) {
 export async function createSocialLink(data: {
   platform: string;
   url: string;
+  icon?: string;
   order_index: number;
 }) {
   return withRetry(async () => {
     const { rows } = await sql`
-      INSERT INTO social_links (platform, url, order_index)
-      VALUES (${data.platform}, ${data.url}, ${data.order_index})
+      INSERT INTO social_links (platform, url, icon, order_index)
+      VALUES (${data.platform}, ${data.url}, ${data.icon || null}, ${data.order_index})
       RETURNING *
     `;
     return rows[0];
@@ -385,6 +386,7 @@ export async function createSocialLink(data: {
 export async function updateSocialLink(id: number, data: {
   platform: string;
   url: string;
+  icon?: string;
   order_index: number;
 }) {
   return withRetry(async () => {
@@ -392,6 +394,7 @@ export async function updateSocialLink(id: number, data: {
       UPDATE social_links
       SET platform = ${data.platform},
           url = ${data.url},
+          icon = ${data.icon || null},
           order_index = ${data.order_index},
           updated_at = CURRENT_TIMESTAMP
       WHERE id = ${id}

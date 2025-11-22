@@ -22,6 +22,18 @@ async function setupDatabase() {
     await sql.query(schema);
     console.log('✅ Tables created successfully');
 
+    // Run additional migrations
+    const migrations = ['003_add_testimonial_fields.sql', '004_add_recent_work_fields.sql', '005_add_social_icon.sql'];
+    for (const migration of migrations) {
+      const migrationPath = path.join(__dirname, 'migrations', migration);
+      if (fs.existsSync(migrationPath)) {
+        console.log(`📋 Running migration: ${migration}...`);
+        const migrationSql = fs.readFileSync(migrationPath, 'utf-8');
+        await sql.query(migrationSql);
+        console.log(`✅ Migration ${migration} completed`);
+      }
+    }
+
     // Read and execute seed data
     const seedPath = path.join(__dirname, 'migrations', '002_seed_data.sql');
     const seedData = fs.readFileSync(seedPath, 'utf-8');

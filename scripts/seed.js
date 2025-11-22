@@ -86,13 +86,16 @@ async function seedDatabase() {
     console.log('\nAdding sample testimonial...');
     await sql`
       INSERT INTO testimonials (
-        client_name, testimonial_text, client_photo_url, display_order
+        client_name, quote, client_image_url, order_index, client_position, client_company, rating
       )
       VALUES (
         'John Doe',
         'Working with this project manager was an absolute pleasure. Highly recommended!',
         'https://www.figma.com/api/mcp/asset/924177db-2185-4aae-985b-990be63a1a21',
-        1
+        1,
+        'CEO',
+        'Tech Company',
+        5
       )
       ON CONFLICT DO NOTHING
     `;
@@ -102,14 +105,16 @@ async function seedDatabase() {
     console.log('\nAdding sample recent work...');
     await sql`
       INSERT INTO recent_work (
-        title, description, image_url, button_text, display_order
+        title, description, image_url, button_text, order_index, work_url, category
       )
       VALUES (
         'Recent Project',
-        'A brief description of this recent project.',
+        'This is a recent work sample. Customize through the admin panel.',
         'https://www.figma.com/api/mcp/asset/bbadab58-b572-4f2e-b94e-aaecd86f17df',
         'Know more',
-        1
+        1,
+        'https://example.com',
+        'Web Development'
       )
       ON CONFLICT DO NOTHING
     `;
@@ -118,11 +123,11 @@ async function seedDatabase() {
     // 9. Add social links
     console.log('\nAdding social links...');
     await sql`
-      INSERT INTO social_links (platform, url, icon_type, display_order)
+      INSERT INTO social_links (platform, url, icon, order_index)
       VALUES 
-        ('LinkedIn', 'https://linkedin.com', 'linkedin', 1),
-        ('Twitter', 'https://twitter.com', 'twitter', 2),
-        ('GitHub', 'https://github.com', 'github', 3)
+        ('LinkedIn', 'https://linkedin.com', 'Linkedin', 1),
+        ('Twitter', 'https://twitter.com', 'Twitter', 2),
+        ('GitHub', 'https://github.com', 'Github', 3)
       ON CONFLICT DO NOTHING
     `;
     console.log('✅ Social links added');

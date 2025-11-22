@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const config = await getPortfolioConfig();
+    const config: any = await getPortfolioConfig();
     
     // Map database field names to frontend field names
     const response = {

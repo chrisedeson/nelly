@@ -10,7 +10,7 @@ export async function GET() {
       id: link.id,
       platform_name: link.platform || '',
       platform_url: link.url || '',
-      icon_name: link.platform || '', // Use platform name as icon name
+      icon_name: link.icon || link.platform || '', // Use icon field, fallback to platform
       order_index: link.order_index || 0,
     }));
     return NextResponse.json(mapped);
@@ -36,6 +36,7 @@ export async function POST(request: NextRequest) {
     const dbData = {
       platform: data.platform_name || data.platform || '',
       url: data.platform_url || data.url || '',
+      icon: data.icon_name || data.icon,
       order_index: data.order_index || 0,
     };
     const socialLink = await createSocialLink(dbData);

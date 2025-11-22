@@ -26,7 +26,7 @@ export async function GET(
       id: socialLink.id,
       platform_name: socialLink.platform || '',
       platform_url: socialLink.url || '',
-      icon_name: socialLink.platform || '',
+      icon_name: socialLink.icon || socialLink.platform || '',
       order_index: socialLink.order_index || 0,
     };
     return NextResponse.json(mapped);
@@ -56,6 +56,7 @@ export async function PUT(
     const dbData = {
       platform: data.platform_name || data.platform || '',
       url: data.platform_url || data.url || '',
+      icon: data.icon_name || data.icon,
       order_index: data.order_index || 0,
     };
     const socialLink = await updateSocialLink(parseInt(id), dbData);

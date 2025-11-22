@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import svgPaths from "@/lib/imports/svg-paths";
+import * as LucideIcons from "lucide-react";
 
 interface SocialLink {
   platform_name: string;
@@ -46,27 +46,27 @@ export default function TopMenu({ socialLinks }: { socialLinks: SocialLink[] }) 
 
           {/* Social Media Icons */}
           <div className="hidden md:flex items-center gap-4 ml-auto" role="list" aria-label="Social media links">
-            {socialLinks?.map((link, idx) => (
-              <a
-                key={`social-${link.platform_name}-${idx}`}
-                href={link.platform_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-white opacity-30 hover:opacity-60 transition-opacity"
-                aria-label={`Visit ${link.platform_name} profile`}
-                role="listitem"
-              >
-                <svg
-                  className="w-4 h-4"
-                  viewBox="0 0 18 17"
-                  fill="currentColor"
-                  aria-hidden="true"
-                  focusable="false"
+            {socialLinks?.map((link, idx) => {
+              // Get the icon component from lucide-react
+              const IconComponent = (LucideIcons as any)[link.icon_name] || LucideIcons.Link;
+              
+              return (
+                <a
+                  key={`social-${link.platform_name}-${idx}`}
+                  href={link.platform_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white opacity-30 hover:opacity-60 transition-opacity"
+                  aria-label={`Visit ${link.platform_name} profile`}
+                  role="listitem"
                 >
-                  <path d={svgPaths.p1173a900} />
-                </svg>
-              </a>
-            ))}
+                  <IconComponent 
+                    className="w-4 h-4"
+                    aria-hidden="true"
+                  />
+                </a>
+              );
+            })}
           </div>
 
           {/* Mobile Menu Button */}
