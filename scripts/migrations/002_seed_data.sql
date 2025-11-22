@@ -88,17 +88,21 @@ INSERT INTO testimonials (quote, client_name, client_position, client_company, c
   );
 
 -- Insert recent work
-INSERT INTO recent_work (title, description, image_url, order_index) VALUES
+INSERT INTO recent_work (title, description, image_url, work_url, category, order_index) VALUES
   (
     'Work name here',
     'Labore et dolore magna aliqua. sed do eiusmod tempor incididunt ut labore et dolore magna.',
     'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&h=600&fit=crop',
+    '#',
+    'Project Management',
     1
   ),
   (
     'Work name here',
     'Rempor incididunt ut labore et dolore magna aliqua. sed do eiusmod tempor incididunt u',
     'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&h=600&fit=crop',
+    '#',
+    'Design',
     2
   );
 

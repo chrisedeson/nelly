@@ -275,12 +275,14 @@ export async function createRecentWork(data: {
   title: string;
   description: string;
   image_url?: string;
+  work_url?: string;
+  category?: string;
   order_index: number;
 }) {
   return withRetry(async () => {
     const { rows } = await sql`
-      INSERT INTO recent_work (title, description, image_url, order_index)
-      VALUES (${data.title}, ${data.description}, ${data.image_url || null}, ${data.order_index})
+      INSERT INTO recent_work (title, description, image_url, work_url, category, order_index)
+      VALUES (${data.title}, ${data.description}, ${data.image_url || null}, ${data.work_url || null}, ${data.category || null}, ${data.order_index})
       RETURNING *
     `;
     return rows[0];
@@ -291,6 +293,8 @@ export async function updateRecentWork(id: number, data: {
   title: string;
   description: string;
   image_url?: string;
+  work_url?: string;
+  category?: string;
   order_index: number;
 }) {
   return withRetry(async () => {
@@ -299,6 +303,8 @@ export async function updateRecentWork(id: number, data: {
       SET title = ${data.title},
           description = ${data.description},
           image_url = ${data.image_url || null},
+          work_url = ${data.work_url || null},
+          category = ${data.category || null},
           order_index = ${data.order_index},
           updated_at = CURRENT_TIMESTAMP
       WHERE id = ${id}

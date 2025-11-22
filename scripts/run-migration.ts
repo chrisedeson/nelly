@@ -4,10 +4,10 @@ import path from "path";
 
 async function runMigration() {
   try {
-    const migrationPath = path.join(process.cwd(), "scripts/migrations/003_add_testimonial_fields.sql");
+    const migrationPath = path.join(process.cwd(), "scripts/migrations/004_add_recent_work_fields.sql");
     const migrationSQL = fs.readFileSync(migrationPath, "utf-8");
     
-    console.log("Running migration: 003_add_testimonial_fields.sql");
+    console.log("Running migration: 004_add_recent_work_fields.sql");
     
     // Split by semicolon and execute each statement
     const statements = migrationSQL.split(';').filter(s => s.trim());
