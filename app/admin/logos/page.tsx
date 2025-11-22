@@ -54,7 +54,7 @@ function LogoImage({ logo }: { logo: CompanyLogo }) {
       <div
         className="absolute inset-0 animate-gradient-shift"
         style={{
-          background: `linear-gradient(135deg, ${color1}, ${color2})`,
+          backgroundImage: `linear-gradient(135deg, ${color1}, ${color2})`,
           backgroundSize: '200% 200%',
         }}
       >

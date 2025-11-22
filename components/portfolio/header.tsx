@@ -47,44 +47,35 @@ function CompanyLogoImage({ logo }: { logo: CompanyLogo }) {
   const [color1, color2] = getGradientColors(logo.company_name);
 
   return (
-    <div className="h-14 md:h-16 rounded-md border border-[#1b1b1b] flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Animated gradient fallback */}
-      <div
-        className="absolute inset-0 animate-gradient-shift opacity-20"
-        style={{
-          background: `linear-gradient(135deg, ${color1}, ${color2})`,
-          backgroundSize: '200% 200%',
-        }}
-      >
-        {!imageLoaded && !imageError && (
+    <div className="h-14 md:h-16 rounded-md border border-white/5 flex items-center justify-center p-3 relative overflow-hidden bg-transparent hover:bg-white/[0.02] transition-colors">
+      {/* Gradient fallback - only show when image fails or is loading */}
+      {(!imageLoaded || imageError) && (
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `linear-gradient(135deg, ${color1}, ${color2})`,
+            opacity: 0.3,
+          }}
+        >
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-white font-bold text-xs opacity-50">
+            <span className="text-white font-bold text-xl opacity-80">
               {logo.company_name.charAt(0).toUpperCase()}
             </span>
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
-      {/* Actual image */}
+      {/* Actual image - no filters applied */}
       {!imageError && (
         <img
           src={logo.logo_url}
           alt={logo.company_name}
-          className={`relative z-10 max-w-full max-h-full object-contain transition-opacity duration-300 ${
-            imageLoaded ? 'opacity-30 hover:opacity-60' : 'opacity-0'
+          className={`relative z-10 max-w-full max-h-full object-contain transition-all duration-300 ${
+            imageLoaded ? 'opacity-100' : 'opacity-0'
           }`}
           onLoad={() => setImageLoaded(true)}
           onError={() => setImageError(true)}
         />
-      )}
-
-      {/* Show gradient with company initial when image fails */}
-      {imageError && (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-white font-bold text-lg opacity-40">
-            {logo.company_name.charAt(0).toUpperCase()}
-          </span>
-        </div>
       )}
     </div>
   );

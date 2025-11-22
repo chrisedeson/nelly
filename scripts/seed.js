@@ -53,14 +53,19 @@ async function seedDatabase() {
     `;
     console.log('✅ Contact section added');
 
-    // 5. Add sample company
-    console.log('\nAdding sample company...');
+    // 5. Add sample company logos
+    console.log('\nAdding sample company logos...');
     await sql`
-      INSERT INTO companies (name, logo_url, display_order)
-      VALUES ('Company Name', 'https://picsum.photos/120/40?random=company1', 1)
+      INSERT INTO company_logos (company_name, logo_url, order_index)
+      VALUES 
+        ('ClickUp', 'https://logo.clearbit.com/clickup.com', 1),
+        ('Figma', 'https://logo.clearbit.com/figma.com', 2),
+        ('Notion', 'https://logo.clearbit.com/notion.so', 3),
+        ('Slack', 'https://logo.clearbit.com/slack.com', 4),
+        ('Trello', 'https://logo.clearbit.com/trello.com', 5)
       ON CONFLICT DO NOTHING
     `;
-    console.log('✅ Sample company added');
+    console.log('✅ Sample company logos added');
 
     // 6. Add sample case study
     console.log('\nAdding sample case study...');
