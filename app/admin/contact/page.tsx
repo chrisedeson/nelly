@@ -17,6 +17,7 @@ export default function ContactPage() {
     phone: "",
     location: "",
     availability_status: "",
+    receiver_email: "",
   });
 
   useEffect(() => {
@@ -33,6 +34,7 @@ export default function ContactPage() {
           phone: result.phone || "",
           location: result.location || "",
           availability_status: result.availability_status || "",
+          receiver_email: result.receiver_email || "",
         });
       }
     } catch (error) {
@@ -134,6 +136,22 @@ export default function ContactPage() {
                 setData({ ...data, availability_status: e.target.value })
               }
               placeholder="e.g., Available for new projects"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="receiver_email">Email Address to Receive Contact Form Submissions</Label>
+            <Input
+              id="receiver_email"
+              name="receiver_email"
+              type="email"
+              value={data.receiver_email}
+              onChange={(e) =>
+                setData({ ...data, receiver_email: e.target.value })
+              }
+              required
+              aria-required="true"
+              placeholder="your-email@example.com"
             />
           </div>
 
