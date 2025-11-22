@@ -21,11 +21,11 @@ export async function GET(
     const mapped = {
       id: testimonial.id,
       client_name: testimonial.client_name || '',
-      client_position: '', // Not in DB
-      client_company: '', // Not in DB
+      client_position: testimonial.client_position || '',
+      client_company: testimonial.client_company || '',
       testimonial_text: testimonial.quote || '',
       client_image_url: testimonial.client_image_url || '',
-      rating: 5, // Not in DB, default to 5
+      rating: testimonial.rating || 5,
       order_index: testimonial.order_index || 0,
     };
 
@@ -53,15 +53,23 @@ export async function PUT(
     const { id } = await params;
     const data = await request.json();
     
+    console.log('Updating testimonial:', id, 'with data:', data);
+    
     // Map frontend field names to database field names
     const dbData = {
       quote: data.testimonial_text || data.quote || '',
       client_name: data.client_name || '',
+      client_position: data.client_position,
+      client_company: data.client_company,
       client_image_url: data.client_image_url,
+      rating: data.rating,
       order_index: data.order_index || 0,
     };
     
+    console.log('Mapped to database format:', dbData);
+    
     const testimonial = await updateTestimonial(parseInt(id), dbData);
+    console.log('Updated testimonial:', testimonial);
     return NextResponse.json(testimonial);
   } catch (error) {
     console.error("Error updating testimonial:", error);

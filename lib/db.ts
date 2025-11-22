@@ -176,11 +176,11 @@ export async function getTestimonials() {
     return rows.map(row => ({
       id: row.id,
       client_name: row.client_name || '',
-      client_position: '', // Not in DB
-      client_company: '', // Not in DB
+      client_position: row.client_position || '',
+      client_company: row.client_company || '',
       testimonial_text: row.quote || '',
       client_image_url: row.client_image_url || '',
-      rating: 5, // Not in DB
+      rating: row.rating || 5,
       order_index: row.order_index || 0,
     }));
   });
@@ -196,13 +196,24 @@ export async function getTestimonial(id: number) {
 export async function createTestimonial(data: {
   quote: string;
   client_name: string;
+  client_position?: string;
+  client_company?: string;
   client_image_url?: string;
+  rating?: number;
   order_index: number;
 }) {
   return withRetry(async () => {
     const { rows } = await sql`
-      INSERT INTO testimonials (quote, client_name, client_image_url, order_index)
-      VALUES (${data.quote}, ${data.client_name}, ${data.client_image_url || null}, ${data.order_index})
+      INSERT INTO testimonials (quote, client_name, client_position, client_company, client_image_url, rating, order_index)
+      VALUES (
+        ${data.quote}, 
+        ${data.client_name}, 
+        ${data.client_position || null}, 
+        ${data.client_company || null}, 
+        ${data.client_image_url || null}, 
+        ${data.rating || 5}, 
+        ${data.order_index}
+      )
       RETURNING *
     `;
     return rows[0];
@@ -212,7 +223,10 @@ export async function createTestimonial(data: {
 export async function updateTestimonial(id: number, data: {
   quote: string;
   client_name: string;
+  client_position?: string;
+  client_company?: string;
   client_image_url?: string;
+  rating?: number;
   order_index: number;
 }) {
   return withRetry(async () => {
@@ -220,7 +234,10 @@ export async function updateTestimonial(id: number, data: {
       UPDATE testimonials
       SET quote = ${data.quote},
           client_name = ${data.client_name},
+          client_position = ${data.client_position || null},
+          client_company = ${data.client_company || null},
           client_image_url = ${data.client_image_url || null},
+          rating = ${data.rating || 5},
           order_index = ${data.order_index},
           updated_at = CURRENT_TIMESTAMP
       WHERE id = ${id}

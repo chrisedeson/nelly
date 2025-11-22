@@ -49,29 +49,41 @@ INSERT INTO projects (title, description, tags, image_url, project_link, order_i
   );
 
 -- Insert testimonials
-INSERT INTO testimonials (quote, client_name, client_image_url, order_index) VALUES
+INSERT INTO testimonials (quote, client_name, client_position, client_company, client_image_url, rating, order_index) VALUES
   (
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    'Client Name',
+    'Christaiana Morgon Alisha',
+    'Product Manager',
+    'TechCorp Inc',
     'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop',
+    5,
     1
   ),
   (
     'Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    'Client Name',
+    'John Smith',
+    'CEO',
+    'StartupXYZ',
     'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop',
+    5,
     2
   ),
   (
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    'Client Name',
+    'Jane Doe',
+    'Director of Operations',
+    'Global Solutions',
     'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop',
+    5,
     3
   ),
   (
     'Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    'Client Name',
+    'Mike Johnson',
+    'Project Lead',
+    'Innovation Labs',
     'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop',
+    5,
     4
   );
 

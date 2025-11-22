@@ -17,6 +17,9 @@ import RecentWork from "@/components/portfolio/recent-work";
 import GetInTouch from "@/components/portfolio/get-in-touch";
 import Footer from "@/components/portfolio/footer";
 
+// Revalidate every 60 seconds to show fresh data
+export const revalidate = 60;
+
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getSEOSettings();
 

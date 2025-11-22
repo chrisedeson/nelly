@@ -5,20 +5,8 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET() {
   try {
     const testimonials = await getTestimonials();
-    
-    // Map database fields to frontend expected fields
-    const mapped = testimonials.map((t: any) => ({
-      id: t.id,
-      client_name: t.client_name || '',
-      client_position: '', // Not in DB
-      client_company: '', // Not in DB
-      testimonial_text: t.quote || '',
-      client_image_url: t.client_image_url || '',
-      rating: 5, // Not in DB, default to 5
-      order_index: t.order_index || 0,
-    }));
-    
-    return NextResponse.json(mapped);
+    // getTestimonials now returns properly mapped fields
+    return NextResponse.json(testimonials);
   } catch (error) {
     console.error("Error fetching testimonials:", error);
     return NextResponse.json(
@@ -38,15 +26,23 @@ export async function POST(request: NextRequest) {
   try {
     const data = await request.json();
     
+    console.log('Received testimonial data:', data);
+    
     // Map frontend field names to database field names
     const dbData = {
       quote: data.testimonial_text || data.quote || '',
       client_name: data.client_name || '',
+      client_position: data.client_position,
+      client_company: data.client_company,
       client_image_url: data.client_image_url,
+      rating: data.rating,
       order_index: data.order_index || 0,
     };
     
+    console.log('Mapped to database format:', dbData);
+    
     const testimonial = await createTestimonial(dbData);
+    console.log('Created testimonial:', testimonial);
     return NextResponse.json(testimonial);
   } catch (error) {
     console.error("Error creating testimonial:", error);

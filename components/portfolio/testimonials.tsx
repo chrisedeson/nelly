@@ -58,9 +58,13 @@ export default function Testimonials({
                   <p className="font-['Raleway:Bold',sans-serif] font-bold text-white text-base md:text-lg">
                     {testimonial.client_name}
                   </p>
-                  <p className="font-['IBM_Plex_Mono:Regular',sans-serif] text-[#9c9c9c] text-xs">
-                    {testimonial.client_position} at {testimonial.client_company}
-                  </p>
+                  {(testimonial.client_position || testimonial.client_company) && (
+                    <p className="font-['IBM_Plex_Mono:Regular',sans-serif] text-[#9c9c9c] text-xs">
+                      {testimonial.client_position}
+                      {testimonial.client_position && testimonial.client_company && ' at '}
+                      {testimonial.client_company}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
