@@ -55,14 +55,18 @@ export default function ContactPage() {
         body: JSON.stringify(data),
       });
 
-      if (!response.ok) throw new Error("Failed to save");
+      const result = await response.json();
+
+      if (!response.ok || result.error) {
+        throw new Error(result.error || "Failed to save");
+      }
 
       toast.success("Contact info updated successfully!");
       router.push("/admin");
       router.refresh();
     } catch (error) {
       console.error("Error saving:", error);
-      toast.error("Failed to save changes");
+      toast.error(error instanceof Error ? error.message : "Failed to save changes");
     } finally {
       setSaving(false);
     }

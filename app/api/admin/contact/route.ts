@@ -25,6 +25,14 @@ export async function PUT(request: Request) {
   try {
     const data = await request.json();
     const contact = await updateContactInfo(data);
+    
+    if (!contact) {
+      return NextResponse.json(
+        { error: "Failed to update contact info" },
+        { status: 500 }
+      );
+    }
+    
     return NextResponse.json(contact);
   } catch (error) {
     console.error("Error updating contact info:", error);

@@ -23,13 +23,17 @@ export default function GetInTouch() {
         body: JSON.stringify(formData),
       });
 
-      if (!response.ok) throw new Error("Failed to send message");
+      const result = await response.json();
+
+      if (!response.ok || result.error) {
+        throw new Error(result.error || "Failed to send message");
+      }
 
       toast.success("Thank you for your message! I'll get back to you soon.");
       setFormData({ name: "", email: "", message: "" });
     } catch (error) {
       console.error("Error sending message:", error);
-      toast.error("Failed to send message. Please try again.");
+      toast.error(error instanceof Error ? error.message : "Failed to send message. Please try again.");
     } finally {
       setSubmitting(false);
     }
