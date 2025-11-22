@@ -126,7 +126,7 @@ async function seedDatabase() {
       INSERT INTO social_links (platform, url, icon, order_index)
       VALUES 
         ('LinkedIn', 'https://linkedin.com', 'Linkedin', 1),
-        ('Twitter', 'https://twitter.com', 'Twitter', 2),
+        ('X', 'https://x.com', 'X', 2),
         ('GitHub', 'https://github.com', 'Github', 3)
       ON CONFLICT DO NOTHING
     `;

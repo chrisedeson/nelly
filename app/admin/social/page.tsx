@@ -236,7 +236,7 @@ function SocialDialog({
 
           <div className="space-y-2">
             <Label htmlFor="icon_name">
-              Icon Name (Lucide icon name)
+              Icon Name (Must be exactly as official name)
             </Label>
             <Input
               id="icon_name"

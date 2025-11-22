@@ -1,12 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import * as LucideIcons from "lucide-react";
+import { IconType } from "react-icons";
+import * as SimpleIcons from "react-icons/si";
+import * as BrandIcons from "react-icons/fa";
+import { ExternalLink } from "lucide-react";
 
 interface SocialLink {
-  platform_name: string;
-  platform_url: string;
-  icon_name: string;
+  platform?: string;
+  platform_name?: string;
+  url?: string;
+  platform_url?: string;
+  icon?: string;
+  icon_name?: string;
 }
 
 export default function TopMenu({ socialLinks }: { socialLinks: SocialLink[] }) {
@@ -47,17 +53,74 @@ export default function TopMenu({ socialLinks }: { socialLinks: SocialLink[] }) 
           {/* Social Media Icons */}
           <div className="hidden md:flex items-center gap-4 ml-auto" role="list" aria-label="Social media links">
             {socialLinks?.map((link, idx) => {
-              // Get the icon component from lucide-react
-              const IconComponent = (LucideIcons as any)[link.icon_name] || LucideIcons.Link;
+              // Support both database field names and admin field names
+              const iconName = link.icon_name || link.icon || '';
+              const platformName = link.platform_name || link.platform || '';
+              const platformUrl = link.platform_url || link.url || '';
+              
+              // Get the appropriate icon from react-icons
+              const getIcon = (name: string, platform: string): IconType => {
+                const lowerName = name.toLowerCase();
+                const lowerPlatform = platform.toLowerCase();
+                
+                // Simple Icons (SI) mapping - official brand logos
+                const siMap: Record<string, any> = {
+                  linkedin: SimpleIcons.SiLinkedin,
+                  x: SimpleIcons.SiX,
+                  twitter: SimpleIcons.SiX, // Twitter is now X
+                  github: SimpleIcons.SiGithub,
+                  facebook: SimpleIcons.SiFacebook,
+                  instagram: SimpleIcons.SiInstagram,
+                  youtube: SimpleIcons.SiYoutube,
+                  dribbble: SimpleIcons.SiDribbble,
+                  behance: SimpleIcons.SiBehance,
+                  pinterest: SimpleIcons.SiPinterest,
+                  tiktok: SimpleIcons.SiTiktok,
+                  snapchat: SimpleIcons.SiSnapchat,
+                  reddit: SimpleIcons.SiReddit,
+                  medium: SimpleIcons.SiMedium,
+                  whatsapp: SimpleIcons.SiWhatsapp,
+                  telegram: SimpleIcons.SiTelegram,
+                  discord: SimpleIcons.SiDiscord,
+                  slack: SimpleIcons.SiSlack,
+                  teams: BrandIcons.FaMicrosoft,
+                  zoom: SimpleIcons.SiZoom,
+                  skype: BrandIcons.FaSkype,
+                  messenger: SimpleIcons.SiMessenger,
+                  asana: SimpleIcons.SiAsana,
+                  trello: SimpleIcons.SiTrello,
+                  jira: SimpleIcons.SiJira,
+                  monday: BrandIcons.FaCalendar,
+                  clickup: SimpleIcons.SiClickup,
+                  notion: SimpleIcons.SiNotion,
+                  airtable: SimpleIcons.SiAirtable,
+                  basecamp: SimpleIcons.SiBasecamp,
+                  gmail: SimpleIcons.SiGmail,
+                  google: SimpleIcons.SiGoogle,
+                  outlook: BrandIcons.FaMicrosoft,
+                  dropbox: SimpleIcons.SiDropbox,
+                  onedrive: BrandIcons.FaMicrosoft,
+                  figma: SimpleIcons.SiFigma,
+                  sketch: SimpleIcons.SiSketch,
+                  adobe: SimpleIcons.SiAdobe,
+                  photoshop: SimpleIcons.SiAdobephotoshop,
+                };
+                
+                // Try icon name first, then platform name
+                const icon = siMap[lowerName] || siMap[lowerPlatform];
+                return icon || ExternalLink;
+              };
+              
+              const IconComponent = getIcon(iconName, platformName);
               
               return (
                 <a
-                  key={`social-${link.platform_name}-${idx}`}
-                  href={link.platform_url}
+                  key={`social-${platformName}-${idx}`}
+                  href={platformUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-white opacity-30 hover:opacity-60 transition-opacity"
-                  aria-label={`Visit ${link.platform_name} profile`}
+                  aria-label={`Visit ${platformName} profile`}
                   role="listitem"
                 >
                   <IconComponent 
