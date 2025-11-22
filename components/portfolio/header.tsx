@@ -5,7 +5,6 @@ import svgPaths from "@/lib/imports/svg-paths";
 interface PortfolioConfig {
   hero_name: string;
   hero_tagline: string;
-  // hero_description?: string;
   hero_image_url?: string;
   hero_cta_text?: string;
   hero_cta_link?: string;
@@ -25,57 +24,58 @@ function CompanyLogoImage({ logo }: { logo: CompanyLogo }) {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  // Generate a consistent gradient based on company name
   const getGradientColors = (name: string) => {
     const gradients = [
-      ['#667eea', '#764ba2'], // Purple
-      ['#f093fb', '#f5576c'], // Pink
-      ['#4facfe', '#00f2fe'], // Blue
-      ['#43e97b', '#38f9d7'], // Green
-      ['#fa709a', '#fee140'], // Orange
-      ['#30cfd0', '#330867'], // Teal
-      ['#a8edea', '#fed6e3'], // Pastel
-      ['#ff9a9e', '#fecfef'], // Rose
-      ['#ffecd2', '#fcb69f'], // Peach
-      ['#ff6e7f', '#bfe9ff'], // Sunset
+      ["#667eea", "#764ba2"],
+      ["#f093fb", "#f5576c"],
+      ["#4facfe", "#00f2fe"],
+      ["#43e97b", "#38f9d7"],
+      ["#fa709a", "#fee140"],
+      ["#30cfd0", "#330867"],
+      ["#a8edea", "#fed6e3"],
+      ["#ff9a9e", "#fecfef"],
+      ["#ffecd2", "#fcb69f"],
+      ["#ff6e7f", "#bfe9ff"],
     ];
 
-    const hash = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const hash = name
+      .split("")
+      .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+
     return gradients[hash % gradients.length];
   };
 
   const [color1, color2] = getGradientColors(logo.company_name);
 
   return (
-    <div className="h-14 md:h-16 rounded-md border border-white/5 flex items-center justify-center p-3 relative overflow-hidden bg-transparent hover:bg-white/[0.02] transition-colors">
-      {/* Gradient fallback - only show when image fails or is loading */}
-      {(!imageLoaded || imageError) && (
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `linear-gradient(135deg, ${color1}, ${color2})`,
-            opacity: 0.3,
-          }}
-        >
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-white font-bold text-xl opacity-80">
-              {logo.company_name.charAt(0).toUpperCase()}
-            </span>
-          </div>
-        </div>
-      )}
-
-      {/* Actual image - no filters applied */}
-      {!imageError && (
+    <div
+      className="h-14 md:h-16 rounded-md border border-white/5 flex items-center justify-center p-3 relative overflow-hidden bg-transparent hover:bg-white/[0.02] transition-colors"
+      style={{
+        backgroundImage: `linear-gradient(135deg, ${color1}, ${color2})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      {!imageError && logo.logo_url && (
         <img
           src={logo.logo_url}
           alt={logo.company_name}
-          className={`relative z-10 max-w-full max-h-full object-contain transition-all duration-300 ${
-            imageLoaded ? 'opacity-100' : 'opacity-0'
-          }`}
-          onLoad={() => setImageLoaded(true)}
+          className="relative z-10 max-w-full max-h-full object-contain opacity-100"
+          onLoad={(e) => {
+            // Check if image actually loaded with content
+            const img = e.currentTarget;
+            if (img.complete && img.naturalWidth > 0) {
+              setImageLoaded(true);
+            }
+          }}
           onError={() => setImageError(true)}
         />
+      )}
+
+      {imageError && (
+        <span className="text-white font-bold text-xl opacity-80">
+          {logo.company_name.charAt(0).toUpperCase()}
+        </span>
       )}
     </div>
   );
@@ -112,12 +112,8 @@ export default function Header({
               <p className="font-['IBM_Plex_Mono:Regular',sans-serif] text-[#9c9c9c] text-sm md:text-base leading-relaxed mb-2">
                 {portfolio.hero_tagline}
               </p>
-              {/* {portfolio.hero_description && (
-                <p className="font-['IBM_Plex_Mono:Regular',sans-serif] text-[#9c9c9c] text-sm md:text-base leading-relaxed">
-                  {portfolio.hero_description}
-                </p>
-              )} */}
             </div>
+
             <div className="flex flex-col sm:flex-row gap-4 mx-auto lg:mx-0">
               <button
                 onClick={handleGetStarted}
@@ -135,14 +131,25 @@ export default function Header({
                   <path d={svgPaths.p99dff00} fill="white" />
                 </svg>
               </button>
+
               {resume?.file_url && (
                 <a
                   href={resume.file_url}
                   download={resume.file_name || "resume.pdf"}
                   className="bg-transparent box-border flex gap-3 items-center justify-center px-8 md:px-12 py-4 md:py-5 rounded border-2 border-[#3f8e00] text-[#3f8e00] hover:bg-[#3f8e00] hover:text-white transition-colors"
                 >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    />
                   </svg>
                   <span className="font-['IBM_Plex_Mono:Bold',sans-serif] text-sm md:text-base">
                     Download Resume
@@ -179,6 +186,7 @@ export default function Header({
             <p className="font-['IBM_Plex_Mono:Regular',sans-serif] text-white text-sm mb-6 text-center lg:text-left">
               Worked with
             </p>
+
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
               {logos.map((logo) => (
                 <CompanyLogoImage key={logo.company_name} logo={logo} />

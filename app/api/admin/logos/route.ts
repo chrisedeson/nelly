@@ -5,7 +5,11 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET() {
   try {
     const logos = await getCompanyLogos();
-    return NextResponse.json(logos);
+    return NextResponse.json(logos, {
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+      },
+    });
   } catch (error) {
     console.error("Error fetching company logos:", error);
     return NextResponse.json(
