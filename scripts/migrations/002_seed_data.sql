@@ -1,9 +1,9 @@
 -- Seed data for Portfolio CMS
 
--- Insert default admin user (password: 'admin123' - CHANGE THIS!)
--- Password hash generated with bcrypt for 'admin123'
+-- Insert default admin user
+-- For default password, contact developer Chris
 INSERT INTO admin_user (password_hash) VALUES
-  ('$2a$10$rG4mF5FJFzOy3qZVYhC0oe7wL/kXXhKZzY8qN3WdZvH8pZ5dWmH4e');
+  ('$2b$10$1rkdAmXGxIbWeblFTahjo.CxHVGX1Dv5jyjmBJnO.WDDRfvKh5Ify');
 
 -- Insert portfolio config (Hero section)
 INSERT INTO portfolio_config (name, intro_text, profile_image_url, cta_text) VALUES
@@ -60,11 +60,11 @@ INSERT INTO testimonials (quote, client_name, client_position, client_company, c
     1
   ),
   (
-    'Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    'John Smith',
+    'Working with Somtochukwu was seamless from start to finish. He understood our needs immediately and delivered high-quality work ahead of schedule. Highly recommended!',
+    'Mark Zuckerberg',
     'CEO',
-    'StartupXYZ',
-    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop',
+    'Meta',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWnaXjW9mSNXAPFaf_KYrmtuw-0JvFYDXqVXvmqqUpkL8inRxTOmvoeLyiYyHRxQtnhsAfl9pX_9gBeOPtWVUuZRaUAXt60f16coIqvtVLhg&s=10',
     5,
     2
   ),
@@ -116,23 +116,23 @@ INSERT INTO contact_info (email, phone, location, receiver_email) VALUES
   );
 
 -- Insert social links
-INSERT INTO social_links (platform, url, order_index) VALUES
-  ('Twitter', 'https://twitter.com/yourusername', 1),
-  ('Behance', 'https://behance.net/yourusername', 2),
-  ('LinkedIn', 'https://linkedin.com/in/yourusername', 3);
+INSERT INTO social_links (platform, url, icon, order_index) VALUES
+  ('LinkedIn', 'https://linkedin.com', 'Linkedin', 1),
+  ('X', 'https://x.com', 'X', 2),
+  ('GitHub', 'https://github.com', 'Github', 3);
 
 -- Insert company logos
 INSERT INTO company_logos (company_name, logo_url, order_index) VALUES
-  ('Company 1', NULL, 1),
-  ('Company 2', NULL, 2),
-  ('Company 3', NULL, 3),
-  ('Company 4', NULL, 4),
-  ('Company 5', NULL, 5);
+  ('Clickup', 'https://logo.clearbit.com/clickup.com', 1),
+  ('Trello', 'https://ggqolvq6uoabo67x.public.blob.vercel-storage.com/Trello-woVxXDNvbh00IM27X5iw3dSHl12ReT.png', 2),
+  ('Stripe', 'https://ggqolvq6uoabo67x.public.blob.vercel-storage.com/stripy-XLvfA4JszzcpmeGNHryNG5oMvqMM1m.png', 3),
+  ('Jira', 'https://ggqolvq6uoabo67x.public.blob.vercel-storage.com/Jira-sp8qr2dNtHL2RyJT38FScuwCcPjJzv.png', 4),
+  ('Google Workspace', 'https://ggqolvq6uoabo67x.public.blob.vercel-storage.com/Google_Workspace-55RteHOujFKs79j9gguBIQmrTY8TtY.png', 5);
 
 -- Insert SEO settings
 INSERT INTO seo_settings (page_title, meta_description, og_image_url) VALUES
   (
-    'Your Name - Project Manager Portfolio',
-    'Experienced project manager specializing in delivering innovative solutions. View my portfolio of successful projects and case studies.',
-    NULL
+    'Portfolio - Project Manager',
+    'Experienced project manager bringing ideas to life with strategic planning and execution.',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5FNxZZ4Diquc05MFPvwp_eR_DL6ckXeGFcg_VDgNpB5EX-6SNDmBx5-XOKe8uVULBIPI&usqp=CAU'
   );

@@ -44,7 +44,7 @@ async function setupDatabase() {
 
     console.log('\n🎉 Database setup complete!');
     console.log('\n📝 Default admin credentials:');
-    console.log('   Password: admin123');
+    console.log('   For default password, contact developer Chris');
     console.log('   ⚠️  IMPORTANT: Change this password immediately after first login!\n');
 
   } catch (error) {

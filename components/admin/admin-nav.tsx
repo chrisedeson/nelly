@@ -8,7 +8,7 @@ const navLinks = [
   { href: "/admin/about", label: "About", disabled: true, title: "Coming soon - not rendered on main site" },
   { href: "/admin/projects", label: "Projects" },
   { href: "/admin/testimonials", label: "Testimonials" },
-  { href: "/admin/recent-work", label: "Recent Work" },
+  { href: "/admin/recent-work", label: "RecentWork" },
   { href: "/admin/contact", label: "Contact" },
   { href: "/admin/social", label: "Social" },
   { href: "/admin/logos", label: "Logos" },

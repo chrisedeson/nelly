@@ -91,7 +91,7 @@ export default function AdminLoginPage() {
         </form>
 
         <div className="mt-6 text-center text-sm text-gray-600" role="note" aria-label="Default credentials information">
-          <p>Default password: <code className="bg-gray-100 px-2 py-1 rounded">admin123</code></p>
+          <p>For default password, contact developer Chris</p>
           <p className="text-xs mt-2 text-red-600" role="alert" aria-live="polite">⚠️ Change this after first login!</p>
         </div>
       </div>
